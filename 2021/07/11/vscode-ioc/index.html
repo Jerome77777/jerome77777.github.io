@@ -228,13 +228,17 @@
             <h1 style="display: none">vscode 依赖注入</h1>
             
             <div class="markdown-body">
-              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在 vscode 的源码中，有许多服务（Service），这些服务提供不同模块的 API 给其他模块使用，在需要依赖该服务的类构造器中用装饰器的形式声明参数，开发者不需要再显示地 new 这个服务对象，在调用者被创建时，这些依赖的服务会被自动创建并传递给调用者，服务之间还能够相互依赖，这样做大幅度地降低了程序的耦合性。本文将带你简单了解 vscode 的依赖注入。</p>
+              <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在 vscode 的源码中，有许多服务（Service），这些服务提供不同模块的 API 给其他模块使用，在需要依赖该服务的类构造器中用装饰器的形式声明参数，开发者不需要再显式地 new 这个服务对象，在调用者被创建时，这些依赖的服务会被自动创建并传递给调用者，服务之间还能够相互依赖，这样做大幅度地降低了程序的耦合性。本文将带你简单了解 vscode 的依赖注入。</p>
 <h1 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h1><h2 id="Typescript-装饰器"><a href="#Typescript-装饰器" class="headerlink" title="Typescript 装饰器"></a>Typescript 装饰器</h2><p>如果您不太了解 typescript 装饰器，请先阅读我之前的文章<a href="https://chenjiangfeng.xyz/2021/07/03/decorators/">《TypeScript 装饰器》</a></p>
 <h1 id="依赖注入详解"><a href="#依赖注入详解" class="headerlink" title="依赖注入详解"></a>依赖注入详解</h1><h2 id="创建服务"><a href="#创建服务" class="headerlink" title="创建服务"></a>创建服务</h2><p>定义一个类并在其构造函数中声明依赖的服务</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">		<span class="hljs-meta">@IMyService</span> <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> myService: IMyService</span></span><br><span class="hljs-params"><span class="hljs-function">	</span>)</span> &#123;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>我们在类中使用了一个装饰器 @IMyService，相信你看了预备知识之后，能够清楚地知道这是一个参数装饰器，该装饰器会在运行时被调用，并传入三个参数：</p>
-<p>对于静态成员来说是类的构造函数，对于实例成员是类的原型对象<br>成员的名字<br>参数在函数参数列表中的索引<br>那么，这个 IMyService 装饰器是如何定义的呢，让我们接下来看：</p>
+<ul>
+<li>对于静态成员来说是类的构造函数，对于实例成员是类的原型对象</li>
+<li>成员的名字</li>
+<li>参数在函数参数列表中的索引<br>那么，这个 IMyService 装饰器是如何定义的呢，让我们接下来看：</li>
+</ul>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> IMyService = createDecorator&lt;IMyService&gt;(<span class="hljs-string">&#x27;myService&#x27;</span>);<br><span class="hljs-keyword">interface</span> IMyService &#123;<br>	<span class="hljs-attr">_serviceBrand</span>: <span class="hljs-literal">undefined</span>;<br>	myMethod(): <span class="hljs-built_in">any</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>当然，这个服务接口需要具体的实现：</p>
