@@ -18,9 +18,25 @@
   <meta name="author" content="jerome">
   <meta name="keywords" content="前端">
   
-  <title>归档 - 小姜的博客</title>
+  <title>koa-middleware - 小姜的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
@@ -48,7 +64,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -147,9 +163,46 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="归档">
+            <span class="h2" id="subtitle" title="koa-middleware">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-18 19:18" pubdate>
+        2021年7月18日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      407 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      4
+       分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -162,40 +215,126 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 11 篇文章</p>
-  <hr>
-  
-  
-    
       
-      <p class="h5">2021</p>
-    
-    <a href="/2021/06/27/prototype/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">原型模式</span>
-      <time style="float: right;">06-27</time>
-    </a>
-  
-</div>
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">koa-middleware</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Koa-的核心扩展机制：中间件"><a href="#Koa-的核心扩展机制：中间件" class="headerlink" title="Koa 的核心扩展机制：中间件"></a>Koa 的核心扩展机制：中间件</h1><h2 id="什么是中间件"><a href="#什么是中间件" class="headerlink" title="什么是中间件"></a>什么是中间件</h2><p>中间件是框架的扩展机制，主要用于抽象 HTTP 请求过程。在单一请求响应过程中加入中间件，可以更好地应对复杂的业务逻辑。</p>
+<p>如果把 HTTTP 处理过程比作污水处理，那么中间件就像一层层的过滤网。每个中间件在 HTTP 处理过程中通过改写请求和响应数据、状态，实现特定功能。大家都知道 HTTP 是无状态协议，所以 HTTP 请求的过程可以这样理解：请求被发送过来，经过无数中间件拦截直至被响应为止。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W8n5Y8"><img src="https://z3.ax1x.com/2021/07/18/W8n5Y8.jpg" srcset="/img/loading.gif" lazyload alt="W8n5Y8.jpg"></a></p>
+<p>请求到达服务器后，依次经过各个中间件，直至被响应，所以整个流程会流经 log 中间件，由请求响应（业务逻辑）中间件给与响应，具体描述如下：</p>
+<ul>
+<li>请求到达 log 中间件，记录此时的时间。</li>
+<li>放过，执行 next，此时会执行下一个中间件。</li>
+<li>执行到请求响应中间件，通过 ctx.body 向浏览器输出响应结果。</li>
+<li>当响应回到 log 中间件时，根据当前时间减去请求到达时间，打印请求耗时。</li>
+<li>最后把响应写到浏览器里。</li>
+</ul>
+<h2 id="Koa-v2"><a href="#Koa-v2" class="headerlink" title="Koa v2"></a>Koa v2</h2><p>在简单了解了中间件之后，本文主要介绍 Koa v2 的内容。Koa v2 是一个成熟的 Web 框架，是由 Koa v1 演进而成的。Koa v2 最重要的特性是支持 async 函数，并且同时支持如下 3 种不同类型函数的中间件。</p>
 
-
-
-
-              </div>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Node/">Node</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/25/vue3-extension-template/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何用 vue3 开发 IDE 插件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/11/vscode-ioc/">
+                        <span class="hidden-mobile">vscode 依赖注入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"282ff869d3b69f9ab2c9","clientSecret":"1076a21fa4b4b6faa17ded96a7fd9fe8c9cbb0cb","repo":"jerome77777.github.io","owner":"jerome77777","admin":["jerome77777"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'bdb85427d53ec8bbd38aad42aa9ac9b3'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -299,9 +438,15 @@
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 

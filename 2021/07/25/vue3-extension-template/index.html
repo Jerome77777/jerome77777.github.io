@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="小姜的博客">
+  <meta name="author" content="jerome">
+  <meta name="keywords" content="前端">
+  
+  <title>如何用 vue3 开发 IDE 插件 - 小姜的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chenjiangfeng.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>小姜的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/bg-img.jpeg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="如何用 vue3 开发 IDE 插件">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-25 17:15" pubdate>
+        2021年7月25日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">如何用 vue3 开发 IDE 插件</h1>
+            
+            <div class="markdown-body">
+              <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>当你想写 IDE 插件的时候，是否觉得原生的写法太过麻烦，为什么不能用框架来写？当 webview 里的页面有十分复杂的交互的时候，写插件里的页面就变成了一件十分头疼的事，任凭外面的框架如何花里胡哨，你也只能使用原生的写法来实现，本文将介绍如何把 Vue3 运用到插件里来开发。</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="创建插件"><a href="#创建插件" class="headerlink" title="创建插件"></a>创建插件</h2><p>全局安装 yo 和 generator-code:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install -g yo generator-code<br></code></pre></td></tr></table></figure>
+<p>按照步骤，新建插件，选择 Typescript 来开发插件:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs shell">yo code<br><br> _-----_     ╭──────────────────────────╮<br>|       |    │   Welcome to the Visual  │<br>|--(o)--|    │   Studio Code Extension  │<br>`---------´   │        generator!        │<br>( _´U`_ )    ╰──────────────────────────╯<br>/___A___\   /<br> |  ~  |<br>__&#x27;.___.&#x27;__<br>´   `  |° ´ Y `<br><br> ? What type of extension do you want to create? New Extension (TypeScript)<br> ? What&#x27;s the name of your extension? helloWorld<br> ? What&#x27;s the identifier of your extension? helloworld<br> ? What&#x27;s the description of your extension?<br> ? Initialize a git repository? No<br> ? Bundle the source code with webpack? Yes<br> ? Which package manager to use?<br> npm<br> ❯ yarn<br></code></pre></td></tr></table></figure>
+<h2 id="新建-vue-项目"><a href="#新建-vue-项目" class="headerlink" title="新建 vue 项目"></a>新建 vue 项目</h2><p>进入插件目录，新建一个名为 frontend 的 vue 项目，需要先安装 vue cli。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vue create frontend<br></code></pre></td></tr></table></figure>
+<p>此时，你会发现，这里的 vue 项目还是 js 的，我们把它换成 ts 的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vue add typescript<br></code></pre></td></tr></table></figure>
+<p>注意： 其中的 Convert all .js files to .ts 选项选 Y。</p>
+<h1 id="新建插件要打开的-panel"><a href="#新建插件要打开的-panel" class="headerlink" title="新建插件要打开的 panel"></a>新建插件要打开的 panel</h1><p>新建 TemplatePanel 类</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// TemplatePanel.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TemplatePanel</span> </span>&#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> currentPanel: TemplatePanel | <span class="hljs-literal">undefined</span>;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> _panel: vscode.WebviewPanel;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> _context: vscode.ExtensionContext;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> _extensionPath: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-keyword">private</span> _disposables: vscode.Disposable[] = [];<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">    panel: vscode.WebviewPanel,</span></span><br><span class="hljs-params"><span class="hljs-function">    context: vscode.ExtensionContext</span></span><br><span class="hljs-params"><span class="hljs-function">  </span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>._panel = panel;<br>    <span class="hljs-built_in">this</span>._context = context;<br>    <span class="hljs-built_in">this</span>._extensionPath = context.extensionPath;<br>    <span class="hljs-built_in">this</span>.initialize();<br>  &#125;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">this</span>._panel.onDidDispose(<span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">this</span>.dispose(), <span class="hljs-literal">null</span>, <span class="hljs-built_in">this</span>._disposables);<br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">show</span>(<span class="hljs-params">context: vscode.ExtensionContext</span>)</span> &#123;<br>    <span class="hljs-comment">// 如果打开了页面，不重复打开</span><br>    <span class="hljs-keyword">if</span> (TemplatePanel.currentPanel) &#123;<br>      <span class="hljs-keyword">const</span> column = vscode.window.activeTextEditor<br>        ? vscode.window.activeTextEditor.viewColumn<br>        : <span class="hljs-literal">undefined</span>;<br>      TemplatePanel.currentPanel._panel.reveal(column);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">const</span> panel = vscode.window.createWebviewPanel(<br>      <span class="hljs-string">&quot;Template&quot;</span>,<br>      localize(<span class="hljs-string">&quot;template&quot;</span>),<br>      vscode.ViewColumn.Active,<br>      &#123;<br>        <span class="hljs-attr">enableScripts</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">retainContextWhenHidden</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-comment">// 用于 IDE 自带的文件协议的可读路径</span><br>        <span class="hljs-attr">localResourceRoots</span>: [<br>          vscode.Uri.file(path.join(context.extensionPath, <span class="hljs-string">&quot;media&quot;</span>)),<br>          vscode.Uri.file(path.join(context.extensionPath, <span class="hljs-string">&quot;frontend&quot;</span>, <span class="hljs-string">&quot;dist&quot;</span>)),<br>        ],<br>      &#125;<br>    );<br><br>    TemplatePanel.currentPanel = <span class="hljs-keyword">new</span> TemplatePanel(panel, context);<br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">dispose</span>(<span class="hljs-params"></span>)</span> &#123;<br>    TemplatePanel.currentPanel = <span class="hljs-literal">undefined</span>;<br>    <span class="hljs-built_in">this</span>._panel.dispose();<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">this</span>._disposables.length) &#123;<br>      <span class="hljs-keyword">const</span> x = <span class="hljs-built_in">this</span>._disposables.pop();<br>      <span class="hljs-keyword">if</span> (x) &#123;<br>        x.dispose();<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="如何获取-vue-的前端页面"><a href="#如何获取-vue-的前端页面" class="headerlink" title="如何获取 vue 的前端页面"></a>如何获取 vue 的前端页面</h2><p>读取 vue 项目打包后的文件，并把引用的文件路径替换成 IDE 能够识别的文件协议格式。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getWebviewContent</span>(<span class="hljs-params">extensionPath: <span class="hljs-built_in">string</span></span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> distPath = vscode.Uri.file(<br>    path.join(extensionPath, <span class="hljs-string">&quot;frontend&quot;</span>, <span class="hljs-string">&quot;dist&quot;</span>)<br>  ).with(&#123; <span class="hljs-attr">scheme</span>: <span class="hljs-string">&quot;vscode-resource&quot;</span> &#125;);<br>  <span class="hljs-comment">// 读取 dits 下的 index.html</span><br>  <span class="hljs-keyword">let</span> html = <span class="hljs-keyword">await</span> fse.readFile(<br>    path.join(__dirname, <span class="hljs-string">&quot;../frontend/dist/index.html&quot;</span>)<br>  );<br>  <span class="hljs-keyword">const</span> hrefReg = <span class="hljs-regexp">/href=([&quot;&#x27;]&#123;1&#125;)\/&#123;1&#125;([^\/])/gi</span>;<br>  <span class="hljs-keyword">const</span> srcReg = <span class="hljs-regexp">/src=([&quot;&#x27;]&#123;1&#125;)\/&#123;1&#125;([^\/])/gi</span>;<br>  <span class="hljs-comment">// 把文件路径替换成 IDE 能够识别的文件协议格式</span><br>  <span class="hljs-keyword">let</span> str = html<br>    .toString()<br>    .replace(hrefReg, <span class="hljs-string">`href=$1<span class="hljs-subst">$&#123;distPath&#125;</span>/$2`</span>)<br>    .replace(srcReg, <span class="hljs-string">`src=$1<span class="hljs-subst">$&#123;distPath&#125;</span>/$2`</span>);<br>  <span class="hljs-keyword">return</span> str;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在 initialize 方法中赋值 webview 的 html：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// TemplatePanel.ts 中的 initialize 方法</span><br><span class="hljs-built_in">this</span>._panel.webview.html = <span class="hljs-keyword">await</span> getWebviewContent(<span class="hljs-built_in">this</span>._extensionPath);<br></code></pre></td></tr></table></figure>
+<h2 id="建立插件端和前端页面（Vue）的通信"><a href="#建立插件端和前端页面（Vue）的通信" class="headerlink" title="建立插件端和前端页面（Vue）的通信"></a>建立插件端和前端页面（Vue）的通信</h2><p>vue 编写的页面相当于是前端（浏览器端），而插件端的逻辑相当于是后端（服务器端），两者需要通信，那怎么才能在不启动服务的情况下进行通信呢，这就要用到 postMessage 了。</p>
+<p>在前端页面中，增加 message 的监听：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// main.ts</span><br><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> message = event.data;<br>  <span class="hljs-keyword">switch</span> (message.command) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;setMessage&quot;</span>: &#123;<br>      <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-attr">default</span>:<br>      <span class="hljs-keyword">break</span>;<br>  &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>在插件端，也要增加 message 的监听，我们写在 initialize 方法里：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-built_in">this</span>._panel.webview.onDidReceiveMessage(<br>  <span class="hljs-keyword">async</span> (message) =&gt; &#123;<br>    <span class="hljs-keyword">switch</span> (message.command) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;getMessage&quot;</span>:<br>        <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">default</span>:<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>  &#125;,<br>  <span class="hljs-literal">null</span>,<br>  <span class="hljs-built_in">this</span>._disposables<br>);<br></code></pre></td></tr></table></figure>
+<p>前端向后端发送消息：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// main.ts</span><br><span class="hljs-comment">// 引入 acquireVsCodeApi 的方法</span><br><span class="hljs-keyword">const</span> ide = acquireVsCodeApi();<br><span class="hljs-comment">// 发送消息</span><br>ide.postMessage(&#123;<br>  <span class="hljs-attr">command</span>: <span class="hljs-string">&quot;getMessage&quot;</span>,<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>后端向前端发送消息：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// templatePanel.ts</span><br><span class="hljs-built_in">this</span>._panel.webview.postMessage(&#123;<br>  <span class="hljs-attr">command</span>: <span class="hljs-string">&quot;setMessage&quot;</span>,<br>  <span class="hljs-attr">data</span>: &#123;<br>    <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;hello&quot;</span>,<br>  &#125;,<br>&#125;);<br></code></pre></td></tr></table></figure>
+<h1 id="新增-Vuex"><a href="#新增-Vuex" class="headerlink" title="新增 Vuex"></a>新增 Vuex</h1><p>安装 vuex，由于我们用的是 vue3，所以要安装 vuex@next</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yarn add vuex@next --save<br></code></pre></td></tr></table></figure>
+<p>在 store.ts 中初始化 vuex</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// store.ts</span><br><span class="hljs-keyword">import</span> &#123; createStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vuex&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> store = createStore(&#123;<br>  <span class="hljs-attr">state</span>: &#123;&#125;,<br>  <span class="hljs-attr">modules</span>: &#123;&#125;,<br>&#125;);<br>在 mian.ts 中引入 vuex<br><span class="hljs-comment">// main.ts</span><br><span class="hljs-keyword">import</span> &#123; store &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./store&quot;</span>;<br><span class="hljs-keyword">const</span> app = createApp(App);<br>app.use(store);<br>app.mount(<span class="hljs-string">&quot;#app&quot;</span>);<br></code></pre></td></tr></table></figure>
+<h1 id="新增多语言（vue-i18n）"><a href="#新增多语言（vue-i18n）" class="headerlink" title="新增多语言（vue-i18n）"></a>新增多语言（vue-i18n）</h1><p>安装 vue-i18n，由于我们用的是 vue3，所以要安装 vue-i18n@next</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yarn add vue-i18n@next --save<br></code></pre></td></tr></table></figure>
+<p>在 i18n.ts 中初始化</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// i18n.ts</span><br><span class="hljs-keyword">import</span> &#123; createI18n &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue-i18n&quot;</span>;<br><br><span class="hljs-keyword">const</span> en = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./locale/en.json&quot;</span>);<br><span class="hljs-keyword">const</span> zhCN = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./locale/zh-CN.json&quot;</span>);<br><br><span class="hljs-comment">// 语言包根据语言环境分类</span><br><span class="hljs-keyword">const</span> messages = &#123;<br>  en,<br>  <span class="hljs-string">&quot;zh-CN&quot;</span>: zhCN,<br>&#125;;<br><br><span class="hljs-keyword">const</span> i18n = createI18n(&#123;<br>  <span class="hljs-attr">locale</span>: <span class="hljs-string">&quot;zh-CN&quot;</span>, <span class="hljs-comment">// 设置当前语言环境，默认中文简体</span><br>  messages, <span class="hljs-comment">// 设置语言环境对应信息</span><br>&#125;);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> i18n;<br></code></pre></td></tr></table></figure>
+<p>在 mian.ts 中引入 vue-i18n</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// main.ts</span><br><span class="hljs-keyword">import</span> i18n <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./i18n/index&quot;</span>;<br><span class="hljs-keyword">const</span> app = createApp(App);<br>app.use(i18n);<br>app.mount(<span class="hljs-string">&quot;#app&quot;</span>);<br>可以在代码中切换语言：<br><span class="hljs-built_in">this</span>.$i18n.locale = <span class="hljs-built_in">this</span>.language;<br></code></pre></td></tr></table></figure>
+<h1 id="如何在-vue-项目中使用静态文件"><a href="#如何在-vue-项目中使用静态文件" class="headerlink" title="如何在 vue 项目中使用静态文件"></a>如何在 vue 项目中使用静态文件</h1><p>由于在 IDE 的 webview 中，使用的是 IDE 的文件协议，而不是正常的 file:// 协议。当你直接使用相对路径或者绝对路径时，是找不到静态资源的，那么，要如何才能在 vue 里用上静态资源呢，方法也很简单，只需要在 vue 项目用上 IDE 的文件协议头即可，我们这里把静态资源放在 media 目录下。</p>
+<p>获取文件协议的 uri</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 获取文件协议的 uri</span><br><span class="hljs-built_in">this</span>._panel.webview.asWebviewUri(<br>                  vscode.Uri.file(path.join(<span class="hljs-built_in">this</span>._extensionPath, <span class="hljs-string">&quot;media&quot;</span>))<br>通过之前的通信方式，把 uri 传到前端页面。<br><span class="hljs-built_in">this</span>._panel.webview.postMessage(&#123;<br>              <span class="hljs-attr">command</span>: <span class="hljs-string">&quot;setSetting&quot;</span>,<br>              <span class="hljs-attr">data</span>: &#123;<br>                <span class="hljs-attr">resource</span>: <span class="hljs-built_in">this</span>._panel.webview.asWebviewUri(<br>                  vscode.Uri.file(path.join(<span class="hljs-built_in">this</span>._extensionPath, <span class="hljs-string">&quot;media&quot;</span>))<br>                ),<br>              &#125;,<br></code></pre></td></tr></table></figure>
+<p>前端接收之后把 uri 拼接成文件协议头：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> resource =<br>  message.data.resource.scheme +<br>  <span class="hljs-string">&quot;://&quot;</span> +<br>  message.data.resource.authority +<br>  message.data.resource.path;<br></code></pre></td></tr></table></figure>
+<p>在页面中使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">:src</span>=<span class="hljs-string">&quot;`$&#123;resource&#125;/images/logo.png`&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+<p>这样就可以在前端页面中使用静态资源了。</p>
+<h1 id="如何调试"><a href="#如何调试" class="headerlink" title="如何调试"></a>如何调试</h1><p>watch vue 项目内容<br>在 frontend 目录下的 package.json 中配置命令：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-string">&quot;scripts&quot;</span>: &#123;<br>    <span class="hljs-attr">&quot;watch&quot;</span>: <span class="hljs-string">&quot;vue-cli-service build --watch&quot;</span><br>  &#125;<br></code></pre></td></tr></table></figure>
+<p>配置完成之后，运行 yarn watch，即可实时监听代码变化，无需重新 build。</p>
+<h2 id="watch-插件中内容"><a href="#watch-插件中内容" class="headerlink" title="watch 插件中内容"></a>watch 插件中内容</h2><p>由于在创建插件模板的时候，已经自行创建了 watch 命令，所以只需要在项目的根目录运行 yarn watch 即可。</p>
+<h2 id="运用-vscode-调试"><a href="#运用-vscode-调试" class="headerlink" title="运用 vscode 调试"></a>运用 vscode 调试</h2><p>点击侧边栏的「运行和调试」，运行 Run Extension 任务。</p>
+<p>运行之后，会打开一个新的窗口，使用快捷键 mac：cmd + shift + p win：ctrl + shift + p，输入 show panel，即可打开之前写的页面。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文介绍了如何用 vue3 来开发 IDE 插件，融合了 vuex、typescript、vue-i18n 等，能够满足日常的开发，如需查看更多的插件开发内容，可查看 文档，有丰富的 api 能够使用。</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p>项目地址: <a href="">https://github.com/Jerome77777/vue3-ide-extension-template</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/vscode/">vscode</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/18/koa-middleware/">
+                        <span class="hidden-mobile">koa-middleware</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"282ff869d3b69f9ab2c9","clientSecret":"1076a21fa4b4b6faa17ded96a7fd9fe8c9cbb0cb","repo":"jerome77777.github.io","owner":"jerome77777","admin":["jerome77777"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '038d9808d06e743b0087d921b61498ea'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/Jerome77777" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="#" target="_blank" rel="nofollow noopener"><span>jerome</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
