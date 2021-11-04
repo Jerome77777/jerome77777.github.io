@@ -18,7 +18,7 @@
   <meta name="author" content="jerome">
   <meta name="keywords" content="前端">
   
-  <title>在二叉树中找到两个节点的最近公共祖先 - 小姜的博客</title>
+  <title>algorithm-test-1104 - 小姜的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="在二叉树中找到两个节点的最近公共祖先">
+            <span class="h2" id="subtitle" title="algorithm-test-1104">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-11-03 20:49" pubdate>
-        2021年11月3日 晚上
+      <time datetime="2021-11-04 20:32" pubdate>
+        2021年11月4日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      370 字
+      313 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      4
        分钟
     </span>
   
@@ -225,23 +225,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">在二叉树中找到两个节点的最近公共祖先</h1>
+            <h1 style="display: none">algorithm-test-1104</h1>
             
             <div class="markdown-body">
-              <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一棵二叉树(保证非空)以及这棵树上的两个节点对应的val值 o1 和 o2，请找到 o1 和 o2 的最近公共祖先节点。</p>
-<p>注：本题保证二叉树中每个节点的val值均不相同。</p>
-<p>如当输入[3,5,1,6,2,0,8,#,#,7,4],5,1时，二叉树{3,5,1,6,2,0,8,#,#,7,4}如下图所示：</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20211014/423483716_1634206667843/D2B5CA33BD970F64A6301FA75AE2EB22" srcset="/img/loading.gif" lazyload alt="二叉树"></p>
-<p>所以节点值为5和节点值为1的节点的最近公共祖先节点的节点值为3，所以对应的输出为3。</p>
-<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a>示例 1</h3><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs clean">输入：<br>[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>,#,#,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>],<span class="hljs-number">5</span>,<span class="hljs-number">1</span><br>返回值：<br><span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+              <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>以字符串的形式读入两个数字，编写一个函数计算它们的和，以字符串形式返回。</p>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a>示例 1</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros">输入：<br><span class="hljs-string">&quot;1&quot;</span>,<span class="hljs-string">&quot;99&quot;</span><br>返回值：<br><span class="hljs-string">&quot;100&quot;</span><br>说明：<br>1+<span class="hljs-attribute">99</span>=100    <br></code></pre></td></tr></table></figure>
+
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a>示例 2</h3><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs 1c">输入：<br><span class="hljs-string">&quot;114514&quot;</span>,<span class="hljs-string">&quot;&quot;</span><br>返回值：<br><span class="hljs-string">&quot;114514&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
-<li>从头往下找，当 root 为空，或者 root.val 等于 o1 或者 o2 时，返回 root</li>
-<li>当 left 为空时，则这两个节点在 root 节点的右子树上，直接从右子树查找</li>
-<li>当 right 为空时，则这两个节点在 root 节点的左子树上，直接从左子树查找</li>
-<li>当都不为空时，则一个在左子树，一个在右子树上，返回 root 节点即可</li>
+<li>先把两个数补全至相同长度，不够长的前面补 0</li>
+<li>从个位开始加，大于 10 的进 1，小于 10 的取余数</li>
+<li>当最后 carry 等于 1 时，需要再进一位</li>
 </ol>
-<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * function TreeNode(x) &#123;</span><br><span class="hljs-comment"> *   this.val = x;</span><br><span class="hljs-comment"> *   this.left = null;</span><br><span class="hljs-comment"> *   this.right = null;</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>root TreeNode类 </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>o1 int整型 </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>o2 int整型 </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return </span>int整型</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lowestCommonAncestor</span>(<span class="hljs-params">root, o1, o2</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> helper(root, o1, o2).val<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">helper</span>(<span class="hljs-params">root, o1, o2</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span> || root.val === o1 || root.val === o2) &#123;<br>        <span class="hljs-keyword">return</span> root<br>    &#125;<br>    <span class="hljs-keyword">let</span> left = helper(root.left, o1, o2)<br>    <span class="hljs-keyword">let</span> right = helper(root.right, o1, o2)<br>    <span class="hljs-keyword">if</span> (left == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> right<br>    &#125;<br>    <span class="hljs-keyword">if</span> (right == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> left<br>    &#125;<br>    <span class="hljs-keyword">return</span> root<br>&#125;<br><br><span class="hljs-built_in">module</span>.exports = &#123;<br>    <span class="hljs-attr">lowestCommonAncestor</span>: lowestCommonAncestor<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span><br><span class="hljs-comment"> * 计算两个数之和</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>s string字符串 表示第一个整数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>t string字符串 表示第二个整数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return </span>string字符串</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">solve</span>(<span class="hljs-params">s, t</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (s === <span class="hljs-string">&#x27;&#x27;</span> || t === <span class="hljs-string">&#x27;&#x27;</span>) &#123;<br>        <span class="hljs-keyword">return</span> s + t<br>    &#125;<br>    <span class="hljs-keyword">let</span> m = s.length,<br>        n = t.length,<br>        res = []<br>    <span class="hljs-keyword">while</span> (m &lt; n) &#123;<br>        s = <span class="hljs-string">&#x27;0&#x27;</span> + s<br>        m = s.length<br>    &#125;<br>    <span class="hljs-keyword">while</span> (m &gt; n) &#123;<br>        t = <span class="hljs-string">&#x27;0&#x27;</span> + t<br>        n = t.length<br>    &#125;<br>    <span class="hljs-keyword">let</span> carry = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-built_in">Math</span>.max(m, n) - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<br>        <span class="hljs-keyword">let</span> temp = <span class="hljs-built_in">parseInt</span>(s[i]) + <span class="hljs-built_in">parseInt</span>(t[i]) + carry<br>        carry = <span class="hljs-built_in">Math</span>.floor(temp / <span class="hljs-number">10</span>) &gt; <span class="hljs-number">0</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span><br>        res.unshift(temp % <span class="hljs-number">10</span>)<br>    &#125;<br>    <span class="hljs-keyword">if</span> (carry == <span class="hljs-number">1</span>) &#123;<br>        res.unshift(<span class="hljs-number">1</span>)<br>    &#125;<br>    <span class="hljs-keyword">return</span> res.join(<span class="hljs-string">&#x27;&#x27;</span>)<br>&#125;<br><span class="hljs-built_in">module</span>.exports = &#123;<br>    <span class="hljs-attr">solve</span>: solve<br>&#125;;<br></code></pre></td></tr></table></figure>
+
             </div>
             <hr>
             <div>
@@ -268,18 +266,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/04/algorithm-test-1104/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">algorithm-test-1104</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/11/02/algorithm-test-11021/">
-                        <span class="hidden-mobile">连续子数组的最大和</span>
+                      <a href="/2021/11/03/algorithm-test-1103/">
+                        <span class="hidden-mobile">在二叉树中找到两个节点的最近公共祖先</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -304,7 +296,7 @@
         var options = Object.assign(
           {"clientID":"282ff869d3b69f9ab2c9","clientSecret":"1076a21fa4b4b6faa17ded96a7fd9fe8c9cbb0cb","repo":"jerome77777.github.io","owner":"jerome77777","admin":["jerome77777"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '4185c1be541bab842ae60cf6b156a14f'
+            id: '982c5907132ab365a1dd2595d9138600'
           }
         )
         var gitalk = new Gitalk(options);
