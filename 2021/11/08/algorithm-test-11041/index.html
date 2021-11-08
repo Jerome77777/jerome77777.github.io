@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-11-04 21:13" pubdate>
-        2021年11月4日 晚上
+      <time datetime="2021-11-08 21:13" pubdate>
+        2021年11月8日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      71 字
+      1.1k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      14
        分钟
     </span>
   
@@ -235,7 +235,28 @@
 
 <h3 id="示例-3"><a href="#示例-3" class="headerlink" title="示例 3"></a>示例 3</h3><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs subunit">输入：<br>&quot;3<span class="hljs-string">+2</span>*3*4<span class="hljs-string">-1</span>&quot;<br>返回值：<br>26<br></code></pre></td></tr></table></figure>
 
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>对于「任何表达式」而言，我们都使用两个栈 nums 和 ops：</p>
+<ul>
+<li>nums ： 存放所有的数字</li>
+<li>ops ：存放所有的数字以外的操作</li>
+</ul>
+<p>然后从前往后做，对遍历到的字符做分情况讨论：</p>
+<ul>
+<li>空格 : 跳过</li>
+<li>( : 直接加入 ops 中，等待与之匹配的 )</li>
+<li>) : 使用现有的 nums 和 ops 进行计算，直到遇到左边最近的一个左括号为止，计算结果放到 nums<br>数字 : 从当前位置开始继续往后取，将整一个连续数字整体取出，加入 nums</li>
+<li><code>+ - *</code> : 需要将操作放入 ops 中。在放入之前先把栈内可以算的都算掉（只有「栈内运算符」比「当前运算符」优先级高/同等，才进行运算），使用现有的 nums 和 ops 进行计算，直到没有操作或者遇到左括号，计算结果放到 nums<br>我们可以通过 🌰 来理解 只有「栈内运算符」比「当前运算符」优先级高/同等，才进行运算 是什么意思：</li>
+</ul>
+<p>因为我们是从前往后做的，假设我们当前已经扫描到 2 + 1 了（此时栈内的操作为 + ）。</p>
+<p>如果后面出现的 + 2 或者 - 1 的话，满足「栈内运算符」比「当前运算符」优先级高/同等，可以将 2 + 1 算掉，把结果放到 nums 中；<br>如果后面出现的是 * 2 的话，不满足「栈内运算符」比「当前运算符」优先级高/同等，这时候不能计算 2 + 1。</p>
+<p>一些细节：</p>
+<ul>
+<li>由于第一个数可能是负数，为了减少边界判断。一个小技巧是先往 nums 添加一个 0</li>
+<li>为防止 () 内出现的首个字符为运算符，将所有的空格去掉，并将 (- 替换为 (0-，(+ 替换为 (0+（当然也可以不进行这样的预处理，将这个处理逻辑放到循环里去做）</li>
+<li>从理论上分析，nums 最好存放的是 long，而不是 int。因为可能存在 大数 + 大数 + 大数 + … - 大数 - 大数 的表达式导致中间结果溢出，最终答案不溢出的情况</li>
+</ul>
+<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span><br><span class="hljs-comment"> * 返回表达式的值</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>s string字符串 待计算的表达式</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return </span>int整型</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">solve</span>(<span class="hljs-params">s</span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> opsMap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>([<br>        [<span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-number">1</span>],<br>        [<span class="hljs-string">&#x27;-&#x27;</span>, <span class="hljs-number">1</span>],<br>        [<span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-number">2</span>]<br>    ])<br>    <span class="hljs-comment">// 将所有的空格去掉</span><br>    s = s.replace(<span class="hljs-regexp">/^\s+/g</span>, <span class="hljs-string">&quot;&quot;</span>)<br>    <span class="hljs-comment">// 存放所有的数字</span><br>    <span class="hljs-keyword">let</span> nums = []<br>    <span class="hljs-comment">// 为了防止第一个数为负数，先往 nums 加个 0</span><br>    nums.push(<span class="hljs-number">0</span>)<br>    <span class="hljs-comment">// 存放操作符</span><br>    <span class="hljs-keyword">let</span> ops = []<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; s.length; i++) &#123;<br>        <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;(&#x27;</span>) &#123;<br>            ops.push(s[i])<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;)&#x27;</span>) &#123;<br>            <span class="hljs-comment">// 计算到最近的一个左括号为止</span><br>            <span class="hljs-keyword">while</span> (ops.length != <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-keyword">const</span> op = ops.pop()<br>                <span class="hljs-keyword">if</span> (op != <span class="hljs-string">&#x27;(&#x27;</span>) &#123;<br>                    calc(nums, ops)<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-keyword">break</span><br>                &#125;<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">isNaN</span>(s[i])) &#123;<br>                <span class="hljs-keyword">let</span> u = <span class="hljs-number">0</span>,<br>                    j = i<br>                <span class="hljs-comment">// 将从 i 位置开始后面的连续数字整体取出，加入 nums</span><br>                <span class="hljs-keyword">while</span> (j &lt; s.length &amp;&amp; !<span class="hljs-built_in">isNaN</span>(s[j])) &#123;<br>                    u = u * <span class="hljs-number">10</span> + <span class="hljs-built_in">Number</span>(s[j++])<br>                    nums.push(u)<br>                    i = j - <span class="hljs-number">1</span><br>                &#125;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; s[i - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;(&#x27;</span> || s[i - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;+&#x27;</span> || s[i - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;-&#x27;</span>) &#123;<br>                    nums.push(<span class="hljs-number">0</span>)<br>                &#125;<br>                <span class="hljs-comment">// 有一个新操作要入栈时，先把栈内可以算的都算了</span><br>                <span class="hljs-comment">// 只有满足「栈内运算符」比「当前运算符」优先级高/同等，才进行运算</span><br>                <span class="hljs-keyword">while</span> (!(ops.length == <span class="hljs-number">0</span>) &amp;&amp; s[s.length - <span class="hljs-number">1</span>] != <span class="hljs-string">&#x27;(&#x27;</span>) &#123;<br>                    <span class="hljs-keyword">const</span> prev = ops.pop()<br>                    <span class="hljs-keyword">if</span> (opsMap.get(prev) &gt;= opsMap.get(s[i])) &#123;<br>                        calc(nums, ops)<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-keyword">break</span><br>                    &#125;<br>                &#125;<br>                ops.push(s[i])<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">while</span> ((ops.length !== <span class="hljs-number">0</span>) &amp;&amp; ops[ops.length - <span class="hljs-number">1</span>] != <span class="hljs-string">&#x27;(&#x27;</span>) &#123;<br>        calc(nums, ops)<br>    &#125;<br>    <span class="hljs-keyword">return</span> nums.pop()<br>&#125;<br><br><span class="hljs-comment">// 计算逻辑：从 nums 中取出两个操作数，从 ops 中取出运算符，然后根据运算符计算</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">calc</span>(<span class="hljs-params">nums, ops</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (nums.length &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">if</span> (ops.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">let</span> b = nums.pop(),<br>        a = nums.pop()<br>    <span class="hljs-keyword">let</span> op = ops.pop()<br>    <span class="hljs-keyword">let</span> ans = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> (op == <span class="hljs-string">&#x27;+&#x27;</span>) &#123;<br>        ans = a + b<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (op == <span class="hljs-string">&#x27;-&#x27;</span>) &#123;<br>        ans = a - b<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (op == <span class="hljs-string">&#x27;*&#x27;</span>) &#123;<br>        ans = a * b<br>    &#125;<br>    nums.push(ans)<br>&#125;<br><br><span class="hljs-built_in">module</span>.exports = &#123;<br>    <span class="hljs-attr">solve</span>: solve<br>&#125;;<br></code></pre></td></tr></table></figure>
+
             </div>
             <hr>
             <div>
@@ -262,18 +283,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/04/algorithm-test-11042/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">删除链表的倒数第n个节点</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/11/04/algorithm-test-1104/">
-                        <span class="hidden-mobile">大数加法</span>
+                      <a href="/2021/11/04/algorithm-test-11042/">
+                        <span class="hidden-mobile">删除链表的倒数第n个节点</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -298,7 +313,7 @@
         var options = Object.assign(
           {"clientID":"282ff869d3b69f9ab2c9","clientSecret":"1076a21fa4b4b6faa17ded96a7fd9fe8c9cbb0cb","repo":"jerome77777.github.io","owner":"jerome77777","admin":["jerome77777"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '63315566536159460cf9d4c921a92d09'
+            id: 'bc588ec690e9ed5621ea3ce3f47bc0fb'
           }
         )
         var gitalk = new Gitalk(options);
