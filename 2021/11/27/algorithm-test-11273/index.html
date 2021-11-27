@@ -18,7 +18,7 @@
   <meta name="author" content="jerome">
   <meta name="keywords" content="前端">
   
-  <title>删除链表的倒数第n个节点 - 小姜的博客</title>
+  <title>最长回文子串 - 小姜的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="删除链表的倒数第n个节点">
+            <span class="h2" id="subtitle" title="最长回文子串">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-11-10 21:18" pubdate>
-        2021年11月10日 晚上
+      <time datetime="2021-11-27 14:43" pubdate>
+        2021年11月27日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      251 字
+      209 字
     </span>
   
 
@@ -225,22 +225,31 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">删除链表的倒数第n个节点</h1>
+            <h1 style="display: none">最长回文子串</h1>
             
             <div class="markdown-body">
-              <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个链表，删除链表的倒数第 n 个节点并返回链表的头指针<br>例如，<br>给出的链表为: 1→2→3→4→5, n=2<br>删除了链表的倒数第 n 个节点之后, 链表变为1→2→3→5.</p>
-<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a>示例 1</h3><figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="xml">输入：</span><br><span class="xml"></span><span class="hljs-template-variable">&#123;1,2&#125;</span><span class="xml">,2    </span><br><span class="xml">返回值：</span><br><span class="xml"></span><span class="hljs-template-variable">&#123;2&#125;</span><br></code></pre></td></tr></table></figure>
+              <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你一个字符串 s，找到 s 中最长的回文子串。</p>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a>示例 1</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nix">输入：<span class="hljs-attr">s</span> = <span class="hljs-string">&quot;babad&quot;</span><br>输出：<span class="hljs-string">&quot;bab&quot;</span><br>解释：<span class="hljs-string">&quot;aba&quot;</span> 同样是符合题意的答案。<br></code></pre></td></tr></table></figure>
 
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
-<li>运用快慢指针的思想</li>
-<li>让 faster 先走 n 步，再让 faster 和 slower 一起走，这样在 faster 走到链表结尾时，假设总的是 x 步，此时 slower走的步数是 x-n 步，那距离链表尾就是 x-(x-n) = n 步</li>
-</ol>
-<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * function ListNode(x)&#123;</span><br><span class="hljs-comment"> *   this.val = x;</span><br><span class="hljs-comment"> *   this.next = null;</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>head ListNode类 </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param </span>n int整型 </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return </span>ListNode类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeNthFromEnd</span>(<span class="hljs-params">head, n</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> head<br>    &#125;<br>    <span class="hljs-keyword">let</span> slower = head<br>    <span class="hljs-keyword">let</span> faster = head<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>        faster = faster.next<br>    &#125;<br>    <span class="hljs-comment">// 判断 n 是否大于 head 的长度</span><br>    <span class="hljs-keyword">if</span> (faster == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> head.next<br>    &#125;<br>    <span class="hljs-keyword">while</span> (faster.next) &#123;<br>        faster = faster.next<br>        slower = slower.next<br>    &#125;<br>    slower.next = slower.next.next<br>    <span class="hljs-keyword">return</span> head<br>&#125;<br><span class="hljs-built_in">module</span>.exports = &#123;<br>    <span class="hljs-attr">removeNthFromEnd</span>: removeNthFromEnd<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a>示例 2</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nix">输入：<span class="hljs-attr">s</span> = <span class="hljs-string">&quot;cbbd&quot;</span><br>输出：<span class="hljs-string">&quot;bb&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="示例-3"><a href="#示例-3" class="headerlink" title="示例 3"></a>示例 3</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nix">输入：<span class="hljs-attr">s</span> = <span class="hljs-string">&quot;ac&quot;</span><br>输出：<span class="hljs-string">&quot;a&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="示例-4"><a href="#示例-4" class="headerlink" title="示例 4"></a>示例 4</h3><figure class="highlight smalltalk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs smalltalk">输入：s = <span class="hljs-comment">&quot;a&quot;</span><br>输出：<span class="hljs-comment">&quot;a&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;string&#125;</span> <span class="hljs-variable">s</span></span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return <span class="hljs-type">&#123;string&#125;</span></span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> longestPalindrome = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">s</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (!s) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span><br>    &#125;<br>    <span class="hljs-keyword">let</span> start = <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; s.length; i++) &#123;<br>        <span class="hljs-keyword">let</span> len1 = expandAroundCenter(s, i, i)<br>        <span class="hljs-keyword">let</span> len2 = expandAroundCenter(s, i, i + <span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">let</span> len = <span class="hljs-built_in">Math</span>.max(len1, len2)<br>        <span class="hljs-keyword">if</span> (len &gt; end - start) &#123;<br>            start = i - <span class="hljs-built_in">Math</span>.floor((len - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>)<br>            end = i + <span class="hljs-built_in">Math</span>.floor(len / <span class="hljs-number">2</span>)<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> s.substring(start, end + <span class="hljs-number">1</span>);<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">expandAroundCenter</span>(<span class="hljs-params">s, left, right</span>) </span>&#123;<br>    <span class="hljs-keyword">while</span> (left &gt;= <span class="hljs-number">0</span> &amp;&amp; right &lt; s.length &amp;&amp; s[left] === s[right]) &#123;<br>        --left<br>        ++right<br>    &#125;<br>    <span class="hljs-keyword">return</span> right - left - <span class="hljs-number">1</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a>
+                    
+                  </div>
                 
                 
               </div>
@@ -256,18 +265,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/27/algorithm-test-11271/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">三数之和</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/11/08/algorithm-test-11041/">
-                        <span class="hidden-mobile">表达式求值</span>
+                      <a href="/2021/11/27/algorithm-test-11272/">
+                        <span class="hidden-mobile">字符串转换整数 (atoi)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -292,7 +295,7 @@
         var options = Object.assign(
           {"clientID":"282ff869d3b69f9ab2c9","clientSecret":"1076a21fa4b4b6faa17ded96a7fd9fe8c9cbb0cb","repo":"jerome77777.github.io","owner":"jerome77777","admin":["jerome77777"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '9b0bc4e09b7e9af2e7476cf715e8af4e'
+            id: 'a38ae63c2ed85bae9670d675a41647a4'
           }
         )
         var gitalk = new Gitalk(options);
