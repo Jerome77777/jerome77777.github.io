@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="小姜的博客">
+  <meta name="author" content="jerome">
+  <meta name="keywords" content="前端">
+  
+  <title>face_subjects - 小姜的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"chenjiangfeng.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>小姜的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/bg-img.jpeg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="face_subjects">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-02-13 14:17" pubdate>
+        2022年2月13日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      62
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">face_subjects</h1>
+            
+            <div class="markdown-body">
+              <h1 id="面试"><a href="#面试" class="headerlink" title="面试"></a>面试</h1><h2 id="项目相关"><a href="#项目相关" class="headerlink" title="项目相关"></a>项目相关</h2><h3 id="什么是快应用"><a href="#什么是快应用" class="headerlink" title="什么是快应用"></a>什么是快应用</h3><p>快应用是一种新的应用形态，快应用就是希望能够让用户无需下载安装，并且还能流畅的体验应用内容。</p>
+<p>开发者主要利用前端知识与技能，以及对应的 IDE，手机设备就可以做原型的开发。快应用使用前端技术栈开发，原生渲染，同时具备 H5 与原生应用的双重优点。</p>
+<h2 id="网络知识"><a href="#网络知识" class="headerlink" title="网络知识"></a>网络知识</h2><h3 id="https"><a href="#https" class="headerlink" title="https"></a>https</h3><ol>
+<li>客户端使用 https url 访问服务器，要求 web 服务器建立 ssl 链接</li>
+<li>服务端接收到请求之后，将网络的证书返回给客户端</li>
+<li>协商加密等级</li>
+<li>建立会话密钥</li>
+<li>服务端用私钥解密</li>
+<li>两者通过密钥加密通信</li>
+</ol>
+<h3 id="http2"><a href="#http2" class="headerlink" title="http2"></a>http2</h3><ol>
+<li>多路复用</li>
+<li>头部压缩</li>
+<li>服务端渲染</li>
+<li>二进制分帧</li>
+</ol>
+<h3 id="http-缓存"><a href="#http-缓存" class="headerlink" title="http 缓存"></a>http 缓存</h3><h4 id="强制缓存"><a href="#强制缓存" class="headerlink" title="强制缓存"></a>强制缓存</h4><p>服务器通知浏览器一个缓存时间，在缓存时间内，下次请求，直接用缓存，不在时间内，执行比较缓存策略。</p>
+<p><strong>Expires</strong>: Expires的值为服务端返回的到期时间，即下一次请求时，请求时间小于服务端返回的到期时间，直接使用缓存数据。</p>
+<p>Cache-Control 是最重要的规则。常见的取值有private、public、no-cache、max-age，no-store，默认为private。<br>private:        客户端可以缓存<br>public:         客户端和代理服务器都可缓存（前端的同学，可以认为public和private是一样的）<br>max-age=xxx:  缓存的内容将在 xxx 秒后失效<br>no-cache:      需要使用对比缓存来验证缓存数据<br>no-store:       所有内容都不会缓存，强制缓存，对比缓存都不会触发（对于前端开发来说，缓存越多越好，so…基本上和它说886）</p>
+<h4 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h4><p>Last-Modified: 服务器在响应请求时，告诉浏览器资源的最后修改时间。</p>
+<p>If-Modified-Since: 再次请求服务器时，通过此字段通知服务器上次请求时，服务器返回的资源最后修改时间。</p>
+<p>Etag: 服务器响应请求时，告诉浏览器当前资源在服务器的唯一标识（生成规则由服务器决定）。</p>
+<p>If-None-Match: 再次请求服务器时，通过此字段通知服务器客户段缓存数据的唯一标识。</p>
+<p>将缓存信息中的 Etag 和 Last-Modified 通过请求发送给服务器，由服务器校验，返回 304 状态码时，浏览器直接使用缓存。</p>
+<p><img src="https://images2015.cnblogs.com/blog/632130/201702/632130-20170210141453338-1263276228.png" srcset="/img/loading.gif" lazyload alt="缓存"></p>
+<h3 id="TCP和UDP的区别"><a href="#TCP和UDP的区别" class="headerlink" title="TCP和UDP的区别"></a>TCP和UDP的区别</h3><p>TCP：连接，需要通过三次握手，可靠，流模式</p>
+<p>UDP：无连接，不可靠，数据报模式</p>
+<h3 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP 三次握手"></a>TCP 三次握手</h3><ol>
+<li>主机 A通过向主机 B发送一个含有同步序列号的标志位的数据给主机 B，向主机 B请求建立连接</li>
+<li>主机 B 收到主机 A 的请求后，用一个带有确认应答（ACK）和同步序列好（SYN）标志位的数据段响应主机 A</li>
+<li>主机 A 收到这个数据段后，再发送一个确认应答，确认已经收到主机 B 的数据段</li>
+</ol>
+<h3 id="TCP-断开连接-4-次握手"><a href="#TCP-断开连接-4-次握手" class="headerlink" title="TCP 断开连接 4 次握手"></a>TCP 断开连接 4 次握手</h3><ol>
+<li>当主机 A 完成数据传输后，将控制位FIN 置1，提出停止 TCP连接的请求</li>
+<li>当主机 B收到 FIN后对其作出响应，确认这一方向的TCP 连接将关闭，将 ACK 置 1</li>
+<li>有 B 端再提出反向的关闭请求，将 FIN 置 1</li>
+<li>主机 A对主机 B的请求进行确认，将 ACK 置 1.双方向的关闭结束</li>
+</ol>
+<h3 id="TCP-IP-四层网络模型"><a href="#TCP-IP-四层网络模型" class="headerlink" title="TCP/IP 四层网络模型"></a>TCP/IP 四层网络模型</h3><p><img src="https://www.zutuanxue.com:8000/static/media/images/2020/9/25/1601024106315.png" srcset="/img/loading.gif" lazyload alt="tcp/ip"></p>
+<p>网络访问层：主要是管理物理网络准备所需要的数据</p>
+<p>网际层：主要是解决数据由一个计算机的IP如何路由到目标计算机的过程规范，MAC 地址、IP 地址、域名</p>
+<p>传输层：提供应用程序接口，为网络应用程序提供网络访问的途径；提供从多个应用层接收消息的功能（多路复用），同时也提供可以把消息分发给应用程序的功能（多路分解）；对数据进行错误检测、流量控制——TCP/UDP</p>
+<p>应用层：为用户的应用提供服务并支持网络访问</p>
+<h3 id="DNS-递归查找的弊端"><a href="#DNS-递归查找的弊端" class="headerlink" title="DNS 递归查找的弊端"></a>DNS 递归查找的弊端</h3><p>开放的DNS服务器上允许递归DNS查询会造成安全漏洞，因为此配置可使攻击者执行DNS放大攻击和DNS缓存中毒</p>
+<h3 id="怎么判断是否返回给用户一个webp格式的资源"><a href="#怎么判断是否返回给用户一个webp格式的资源" class="headerlink" title="怎么判断是否返回给用户一个webp格式的资源"></a>怎么判断是否返回给用户一个webp格式的资源</h3><p>HTTP request header 中有个 accept 字段，为 image/webp 时，返回 webp 格式资源</p>
+<h3 id="HTTP-head"><a href="#HTTP-head" class="headerlink" title="HTTP head"></a>HTTP head</h3><table>
+<thead>
+<tr>
+<th align="left">request</th>
+<th>response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Accept：能够接受的回应内容类型</td>
+<td>Access-Control-Allow-Origin：指定哪些网站可参与到跨来源资源共享过程中</td>
+</tr>
+<tr>
+<td align="left">Accept-Charset：能够接受的字符集</td>
+<td>Age：这个对象在代理缓存中存在的时间，以秒为单位</td>
+</tr>
+<tr>
+<td align="left">Accept-Encoding：能够接受的编码方式列表</td>
+<td>Allow：对于特定资源有效的动作</td>
+</tr>
+<tr>
+<td align="left">Accept-Language：能够接受的回应内容的自然语言列表</td>
+<td>Content-Encoding：在数据上使用的编码类型</td>
+</tr>
+<tr>
+<td align="left">Accept-Datetime：能够接受的按照时间来表示的版本</td>
+<td>Content-Language：内容所使用的预览</td>
+</tr>
+<tr>
+<td align="left">Authorization：用于超文本传输协议的认证的认证信息</td>
+<td>Etag：对于某个资源的特定版本的一个标识符，通常是一个消息散列</td>
+</tr>
+<tr>
+<td align="left">Cache-Control：用来指定在这次的请求/响应链中的所有缓存机制</td>
+<td>Cache-Control：向从服务器直到客户端在内的所有缓存机制告知，它们是否可用缓存这个对象</td>
+</tr>
+<tr>
+<td align="left">Connection：该浏览器想要优先使用的连接类型</td>
+<td>Connection：针对改连接所预期的选项</td>
+</tr>
+<tr>
+<td align="left">Cookie：之前由服务器通过 Set-Cookie 发送的一个超文本传输协议cookie</td>
+<td>Expires：指定一个日期/时间，超过该时间则认为此回应已经过期</td>
+</tr>
+<tr>
+<td align="left">Content-Length：以八位字节数组表示的请求体的长度</td>
+<td>Content-Length：回应消息体的长度</td>
+</tr>
+<tr>
+<td align="left">Content-Type：请求体的 MIME 类型</td>
+<td>Content-Type：当前内容的 MIME 类型</td>
+</tr>
+<tr>
+<td align="left">Date：发送该消息的日期和时间</td>
+<td>Date：此条消息被发送时的日期和时间</td>
+</tr>
+<tr>
+<td align="left">Expect：表明客户端要求服务器做出的特定行为</td>
+<td>Last-Modified：所请求的对象的最后修改日期</td>
+</tr>
+<tr>
+<td align="left">From：发起此请求的用户的邮件地址</td>
+<td>Proxy-Authenticate：要求在访问代理时提供身份认证信息</td>
+</tr>
+<tr>
+<td align="left">Host：服务器的域名</td>
+<td>Set-Cookie：设置 cookie</td>
+</tr>
+<tr>
+<td align="left">If-Match：</td>
+<td>Server：服务器的名字</td>
+</tr>
+<tr>
+<td align="left">If-Modified-Since：允许在对应的内容未被修改的情况下返回 304 未修改</td>
+<td>Status：通用网关接口 协议头字段，用来说明当前这个超文本传输协议会有的状态</td>
+</tr>
+<tr>
+<td align="left">If-None-Match：允许在对应的内容未被修改的情况下返回 304 未修改</td>
+<td>X-Frame-Options：劫持保护</td>
+</tr>
+<tr>
+<td align="left">Origin：发起一个针对跨来源资源共享的请求</td>
+<td>Upgrade：要求客户端升级到另一个协议</td>
+</tr>
+<tr>
+<td align="left">Referer：表示浏览器所访问的前一个页面，正是那个页面上的某个链接将浏览器带到了当前所请求的这个页面</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">User-Agent：浏览器的浏览器身份标识字符串</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><h3 id="双向绑定原理"><a href="#双向绑定原理" class="headerlink" title="双向绑定原理"></a>双向绑定原理</h3><p>使用 defineProperty 改写 get 和 set 方法</p>
+<ol>
+<li>实现一个监听器 Observer，用来劫持并监听所有属性，如果有变动，就通知订阅者</li>
+<li>实现一个订阅者 Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图</li>
+<li>实现一个解析器 Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器</li>
+</ol>
+<h3 id="Vue-数组改变原理"><a href="#Vue-数组改变原理" class="headerlink" title="Vue 数组改变原理"></a>Vue 数组改变原理</h3><p>在数组和 Array.property 上的原型链上插入一个自定义的对象,拦截原来的 push 等方法,在自定义对象中的同名方法中先执行原本的方法,再去人为的调用 <strong>ob</strong>.dep.notify() 去执行之前收集的回调。</p>
+<h3 id="虚拟-Dom"><a href="#虚拟-Dom" class="headerlink" title="虚拟 Dom"></a>虚拟 Dom</h3><ol>
+<li>用 js 对象模拟 dom 树，得到一棵虚拟 dom 树。</li>
+<li>当页面数据变更时，生成新的 Dom 树，比较新旧两棵虚拟 Dom 树的差异。</li>
+<li>把差异应用到真正的 Dom 树上。</li>
+</ol>
+<h3 id="react-diff-和-vue-diff-的差别"><a href="#react-diff-和-vue-diff-的差别" class="headerlink" title="react diff 和 vue diff 的差别"></a>react diff 和 vue diff 的差别</h3><p>相同点：都是忽略跨级比较，只做同级比较。<br>不同点：</p>
+<ol>
+<li>vue 比对节点，当节点元素类型相同，但是 className 不同，认为是不同类型元素，删除重建，而 react 会认为是同类型节点，只是修改节点属性。</li>
+<li>vue 的列表比对，采用从两端到中间的比对方式，而 react 而采用从左到右依次比对的方式。当一个集合，只是把最后一个节点移动到了第一个，react 会把前面的节点依次移动，而 vue 只会把最后一个节点移动到第一个。<br>总体上而言，vue 的形式会更高效。</li>
+</ol>
+<h3 id="React-和-vue-的区别"><a href="#React-和-vue-的区别" class="headerlink" title="React 和 vue 的区别"></a>React 和 vue 的区别</h3><h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ol>
+<li>监听数据变化的实现原理不同</li>
+<li>数据绑定：vue 双向绑定、react 单项数据流</li>
+<li>组件通信不同</li>
+<li>框架本质不同：vue 是 MVVM，react 是前端组件化框架</li>
+</ol>
+<h3 id="key-的作用"><a href="#key-的作用" class="headerlink" title="key 的作用"></a>key 的作用</h3><p>key 的作用就是高效的更新虚拟 Dom</p>
+<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p><strong>Timers（计时器阶段）</strong>：初次进入事件循环，会从计时器阶段开始。此阶段会判断是否存在过期的计时器回调。如果存在则会执行所有过期的计时器回调，执行完毕后，如果回调中触发了相应的微任务，会接着执行所有微任务，执行完微任务后再进入 Pending callbacks 阶段。</p>
+<p><strong>Pending callbacks</strong>：执行推迟到下一个循环迭代的I / O回调（系统调用相关的回调）</p>
+<p><strong>Idle/Prepare</strong>：仅供内部使用。</p>
+<p><strong>Poll（轮询阶段）</strong>：当回调队列不为空时：会执行回调，若回调中触发了相应的微任务，这里的微任务执行时机和其他地方有所不同，不会等到所有回调执行完毕后才执行，而是针对每一个回调执行完毕后，就执行相应微任务。执行完所有的回调后，变为下面的情况：<br>当回调队列为空时，但如果存在有计时器（setTimeout、setInterval和setImmediate）没有执行，会结束轮询阶段，进入 Check 阶段。否则会阻塞并等待任何正在执行的 I/O 操作完成，并马上执行相应的回调，直到所有回调执行完毕。</p>
+<p><strong>Check（查询阶段）</strong>：会检查是否存在 setImmediate 相关的回调，如果存在则执行所有回调，执行完毕后，如果回调中触发了相应的微任务，会接着执行所有微任务，执行完微任务后再进入 Close callbacks 阶段。</p>
+<p><strong>Close callbacks</strong>：执行一些关闭回调</p>
+<h3 id="V8-垃圾回收"><a href="#V8-垃圾回收" class="headerlink" title="V8 垃圾回收"></a>V8 垃圾回收</h3><p>新生代：32-&gt;16MB  64-&gt;32MB<br>老生代：32-&gt;700MB   64-&gt;1.4G<br>新生代分 From To 两个空间，From 是使用状态，To 是闲置状态，主要是通过引用标记的方式，如果有引用，则从 From 到 To，并清除 From 的内容<br>当一个对象经过多次复制仍然存活时，就会被认为是生命周期较长的对象，移到老生代中<br>老生代用标记清除和标记整理算法</p>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全问题"><a href="#安全问题" class="headerlink" title="安全问题"></a>安全问题</h3><p>XSS： 跨域脚本攻击，向网站注入 js 代码，然后执行 js 里的代码，篡改网站的内容<br>CSRF：跨站请求伪造，在用户登录了信任网站A，并生成了本地 cookie，在不登出 A 的情况下，访问了危险网站 B，利用 A 的 cookie 来伪造请求。</p>
+<p>如何防范：<br>XSS：</p>
+<ol>
+<li>对敏感字符进行转义</li>
+<li>HttpOnly 防止劫取 cookie</li>
+</ol>
+<p>CSRF：</p>
+<ol>
+<li>同源检测（Origin 和 Referer）</li>
+<li>token 验证</li>
+</ol>
+<h3 id="防止运行商劫持，前端解决办法"><a href="#防止运行商劫持，前端解决办法" class="headerlink" title="防止运行商劫持，前端解决办法"></a>防止运行商劫持，前端解决办法</h3><p>常见的劫持方式：</p>
+<ul>
+<li>跳转型劫持：输入地址 A，跳转到地址 B</li>
+<li>注入型劫持：在正常网页中注入广告代码（js、iframe 等）</li>
+</ul>
+<ol>
+<li>针对注入js，添加资源过滤，不是自身的 js 不执行。</li>
+<li>针对加载资源，添加白名单控制，在 meta 中设置。</li>
+<li>针对 iframe 嵌套，判断当前窗口有没有被嵌入到别的窗口中。</li>
+</ol>
+<h3 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h3><p>url 的组成是：协议、域名、端口，当一个请求url 的协议、域名、端口三者之间任意一个与当前页面 url 不同时即为跨域。<br>解决方案：</p>
+<ol>
+<li>document.domain + iframe</li>
+<li>动态创建js</li>
+<li>location.hash + iframe</li>
+<li>postMessage</li>
+<li>cors：使用自定义的 http 头部与服务器沟通</li>
+<li>jsonp</li>
+<li>Nginx</li>
+</ol>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ol>
+<li>工厂模式</li>
+<li>装饰器模式</li>
+<li>主从模式</li>
+<li>生产者消费者模式</li>
+<li>单例模式</li>
+<li>代理模式</li>
+<li>MVC 模式</li>
+</ol>
+<h2 id="前端优化"><a href="#前端优化" class="headerlink" title="前端优化"></a>前端优化</h2><h3 id="防抖和节流"><a href="#防抖和节流" class="headerlink" title="防抖和节流"></a>防抖和节流</h3><p>防抖：短时间内大量触发同一事件，只会执行一次函数。debounce<br>节流：短时间内大量触发同一事件，函数只会执行一次，该函数在指定的时间期限内不在工作。throttle</p>
+<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><ol>
+<li>减少 http 请求</li>
+<li>使用 http2</li>
+<li>使用服务端渲染</li>
+<li>静态资源使用 CDN</li>
+<li>将 css 放在文件头部、js 文件放在底部</li>
+<li>使用字体图标 iconfont 代替图片图标</li>
+<li>善用缓存，不重复加载相同的资源</li>
+<li>压缩文件</li>
+<li>图片优化：图片延迟加载、响应式图片、调整图片大小、降低图片质量、尽可能用 css3 效果代替图片</li>
+<li>使用 webp 格式图片</li>
+<li>通过 webpack 按需加载代码，提取第三方库，减少es6转为 es5 的冗余代码</li>
+<li>减少重绘重排</li>
+<li>使用事件委托</li>
+<li>使用 web workers</li>
+<li>降低 CSS 选择器的复杂性</li>
+</ol>
+<h3 id="减少请求数"><a href="#减少请求数" class="headerlink" title="减少请求数"></a>减少请求数</h3><ol>
+<li>删除不必要的图像</li>
+<li>使用雪碧图：把多个图合并到一个图片文件，通过css控制输出。</li>
+<li>实施延迟加载技术</li>
+<li>缩小 css 和 js 文件</li>
+<li>合并 css 和 js 文件</li>
+<li>减少外部脚本数量</li>
+<li>使用 CDN</li>
+</ol>
+<h2 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h2><h3 id="浏览器渲染过程"><a href="#浏览器渲染过程" class="headerlink" title="浏览器渲染过程"></a>浏览器渲染过程</h3><ol>
+<li>解析HTML生成DOM树。</li>
+<li>解析CSS生成CSSOM规则树。</li>
+<li>将DOM树与CSSOM规则树合并在一起生成渲染树。</li>
+<li>遍历渲染树开始布局，计算每个节点的位置大小信息。</li>
+<li>将渲染树每个节点绘制到屏幕。</li>
+</ol>
+<h3 id="从输入Url到页面渲染"><a href="#从输入Url到页面渲染" class="headerlink" title="从输入Url到页面渲染"></a>从输入Url到页面渲染</h3><p>网络阶段：构建请求行、查询强缓存、DNS解析、建立TCP连接、发送HTTP请求、响应请求 </p>
+<p>解析阶段：解析html、构建dom树、计算样式、生成布局树 </p>
+<p>渲染阶段：生成图层树、生成绘制列表、生成图块、优先选择视口附近的图块生成位图数据、展示内容</p>
+<h2 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h2><h3 id="webpack-原理"><a href="#webpack-原理" class="headerlink" title="webpack 原理"></a>webpack 原理</h3><ol>
+<li>初始化参</li>
+<li>开始编译 用上一步得到的参数初始Compiler对象，加载所有配置的插件，通 过执行对象的run方法开始执行编译</li>
+<li>确定入口 根据配置中的 Entry 找出所有入口文件</li>
+<li>编译模块 从入口文件出发，调用所有配置的 Loader 对模块进行编译，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理</li>
+<li>完成模块编译 在经过第4步使用 Loader 翻译完所有模块后， 得到了每个模块被编译后的最终内容及它们之间的依赖关系</li>
+<li>输出资源：根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk,再将每个 Chunk 转换成一个单独的文件加入输出列表中，这是可以修改输出内容的最后机会</li>
+<li>输出完成：在确定好输出内容后，根据配置确定输出的路径和文件名，将文件的内容写入文件系统中。</li>
+</ol>
+<h3 id="webpack-如何处理-es-module-现代浏览器怎么写-esmodule"><a href="#webpack-如何处理-es-module-现代浏览器怎么写-esmodule" class="headerlink" title="webpack 如何处理 es module, 现代浏览器怎么写 esmodule"></a>webpack 如何处理 es module, 现代浏览器怎么写 esmodule</h3><p>webpack 对于 es 模块的实现，也是基于自己实现的 <strong>webpack_require</strong> 和 <strong>webpack_exports__，转换成类似于 commonjs 的形式。对于 es 模块和 commonjs混用的情况，则需要通过__webpack_require</strong>.n 的形式做一层包装来实现。</p>
+<p>在 script 标签上添加一个 type=”module”的属性来表示这个文件是作为 module 的方式来运行的。</p>
+<h3 id="treeshaking"><a href="#treeshaking" class="headerlink" title="treeshaking"></a>treeshaking</h3><p>用来尽可能地删除没有被使用过的代码，一些 import了但是其实没有被使用的代码<br>在配置文件中设置 mode 为 production<br>ES6 模块依赖关系是确定的，和运行时的状态无关，可以进行可靠的静态分析</p>
+<h3 id="怎么用-webpack-处理图片"><a href="#怎么用-webpack-处理图片" class="headerlink" title="怎么用 webpack 处理图片"></a>怎么用 webpack 处理图片</h3><ol>
+<li>控制图片质量，压缩图片大小</li>
+<li>配置<img/>标签的 srcset 来适应不同的屏幕</li>
+<li>合成雪碧图，减少图片资源请求数</li>
+<li>使用占位图</li>
+</ol>
+<h2 id="css"><a href="#css" class="headerlink" title="css"></a>css</h2><h3 id="icon-图标怎么引入"><a href="#icon-图标怎么引入" class="headerlink" title="icon 图标怎么引入"></a>icon 图标怎么引入</h3><ol>
+<li>引入外部 css，在icon网站上生成 css 导入</li>
+<li>下载文件，导入 css</li>
+</ol>
+<h3 id="position-的值"><a href="#position-的值" class="headerlink" title="position 的值"></a>position 的值</h3><p>relative：相对定位，相对于元素的原本位置进行定位<br>absolute：相对于position 值不是 static 的父容器进行定位<br>fixed：固定定位，相对于浏览器窗口进行定位<br>static：默认值，表示无定位</p>
+<h3 id="position-fixed-失效的原因"><a href="#position-fixed-失效的原因" class="headerlink" title="position:fixed 失效的原因"></a>position:fixed 失效的原因</h3><p>父元素有 transform 属性，值不为 none</p>
+<h3 id="flex-布局中-flex-1-代表什么"><a href="#flex-布局中-flex-1-代表什么" class="headerlink" title="flex 布局中 flex:1 代表什么"></a>flex 布局中 flex:1 代表什么</h3><p>flex-grow: 放大比例，默认为 0<br>flex-shrink: 缩小比例，默认为 1<br>flex-basic: 给上面两个属性分配多余空间之前，计算项目是否有多余空间，默认值为 auto，即项目本身的大小</p>
+<h2 id="js"><a href="#js" class="headerlink" title="js"></a>js</h2><h3 id="var-let-const的差别"><a href="#var-let-const的差别" class="headerlink" title="var,let,const的差别"></a>var,let,const的差别</h3><ol>
+<li>var声明的变量会挂载在 window 上，let、const 不会。</li>
+<li>var 声明变量存在变量提升，let、const 不存在</li>
+<li>let、const 声明形成块作用域</li>
+<li>同一作用域下 let 和 const 不能声明同名变量，而 var 可以</li>
+<li>const 一旦声明必须赋值，不能使用 null 占位，不能修改，如果是符合类型数据，可以修改其属性。</li>
+</ol>
+<h3 id="函数的作用域，变量保存在哪里"><a href="#函数的作用域，变量保存在哪里" class="headerlink" title="函数的作用域，变量保存在哪里"></a>函数的作用域，变量保存在哪里</h3><p>在 js 中每声明一个函数就会创建一个函数作用域，同时这个函数的所有变量在整个函数的范围内都可以访问。</p>
+<h3 id="常见的作用域有哪些"><a href="#常见的作用域有哪些" class="headerlink" title="常见的作用域有哪些"></a>常见的作用域有哪些</h3><p>全局作用域、函数作用域、块状作用域、动态作用域</p>
+<h3 id="作用域链什么时候确定的"><a href="#作用域链什么时候确定的" class="headerlink" title="作用域链什么时候确定的"></a>作用域链什么时候确定的</h3><p>变量的作用域是在定义时决定的，通过静态分析就能确定，叫做静态作用域<br>要开启动态作用域的话，要使用 bind、with、eval</p>
+<h3 id="js-执行上下文"><a href="#js-执行上下文" class="headerlink" title="js 执行上下文"></a>js 执行上下文</h3><ol>
+<li>全局执行上下文：只有一个，由浏览器创建，即 window 对象</li>
+<li>函数执行上下文：可以有无数个，每当一个函数被调用时都会创建一个函数上下文。</li>
+<li>执行上下文：执行栈用于存储代码执行期间创建的所有上下文，具有先进后出的特点，执行上下文创建阶段分为绑定this，创建词法环境，变量环境三步。</li>
+</ol>
+<h3 id="js-在-new-的过程中发生了什么"><a href="#js-在-new-的过程中发生了什么" class="headerlink" title="js 在 new 的过程中发生了什么"></a>js 在 new 的过程中发生了什么</h3><ol>
+<li>创建新对象</li>
+<li>这个对象的原型指向构造函数的 propertype</li>
+<li>执行构造函数</li>
+<li>返回新对象</li>
+</ol>
+<h3 id="call-、-apply-和-bind"><a href="#call-、-apply-和-bind" class="headerlink" title="call 、 apply 和 bind"></a>call 、 apply 和 bind</h3><p>改变函数的 this 指向，call 和 apply 的第一个参数都是表示要改变指向的对象，第二个参数，apply 是数组，call 是…args 的形式，通过 bind 改变的 this 作用域会返回一个新函数，这个函数不会马上执行。</p>
+<h3 id="重绘与回流，如何优化"><a href="#重绘与回流，如何优化" class="headerlink" title="重绘与回流，如何优化"></a>重绘与回流，如何优化</h3><ol>
+<li>批量修改 dom 或者样式 ：class</li>
+<li>脱离文档流</li>
+<li>先把元素隐藏再改变</li>
+</ol>
+<h3 id="margin重叠，如何解决"><a href="#margin重叠，如何解决" class="headerlink" title="margin重叠，如何解决"></a>margin重叠，如何解决</h3><p>BFC：加个 div 使其触发 bfc</p>
+<h3 id="清除浮动，伪元素清除浮动加在哪里"><a href="#清除浮动，伪元素清除浮动加在哪里" class="headerlink" title="清除浮动，伪元素清除浮动加在哪里"></a>清除浮动，伪元素清除浮动加在哪里</h3><p>正常：加一个新元素 class=”clear:both”<br>伪元素：，如.test:after{clear:both}</p>
+<h3 id="常见的网络协议"><a href="#常见的网络协议" class="headerlink" title="常见的网络协议"></a>常见的网络协议</h3><p>TCP/IP 协议、HTTP 协议、HTTPS 协议、UDP</p>
+<h3 id="事件委托（事件代理）"><a href="#事件委托（事件代理）" class="headerlink" title="事件委托（事件代理）"></a>事件委托（事件代理）</h3><p>只指定一个事件处理程序，就可以管理某一类型的所有事件</p>
+<h3 id="事件冒泡和捕获"><a href="#事件冒泡和捕获" class="headerlink" title="事件冒泡和捕获"></a>事件冒泡和捕获</h3><p>事件冒泡：事件会从最内层的元素开始发生，一直向上传播，直到document对象。</p>
+<p>事件捕获：事件会从最外层开始发生，直到最具体的元素。</p>
+<h3 id="e-target-和-e-currentTarget-的区别"><a href="#e-target-和-e-currentTarget-的区别" class="headerlink" title="e.target 和 e.currentTarget 的区别"></a>e.target 和 e.currentTarget 的区别</h3><p><code>e.target</code> 指向触发事件监听的对象。</p>
+<p><code>e.currentTarget</code> 指向添加监听事件的对象。</p>
+<p>addEventListener 的第三个参数是 true 时，是捕获；是 false 时是冒泡</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="排序有哪些，时间复杂度、空间复杂度"><a href="#排序有哪些，时间复杂度、空间复杂度" class="headerlink" title="排序有哪些，时间复杂度、空间复杂度"></a>排序有哪些，时间复杂度、空间复杂度</h3><p>快速排序、归并排序、堆排序：时间复杂度O(nlogn）<br>冒泡、选择、插入O(n2)</p>
+<h2 id="计算机知识"><a href="#计算机知识" class="headerlink" title="计算机知识"></a>计算机知识</h2><h3 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h3><p>进程是一个具有一定独立功能的程序在一个数据集上的一次动态执行过程。<br>线程是程序执行流的最小单元</p>
+<p>一个进程是由多个线程组成，线程是进程中代码的不同执行路线</p>
+<h2 id="TS"><a href="#TS" class="headerlink" title="TS"></a>TS</h2><h3 id="Partial"><a href="#Partial" class="headerlink" title="Partial"></a>Partial</h3><p>Partial 作用是将传入的属性变为可选项。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Partial&lt;T&gt; = &#123; [P <span class="hljs-keyword">in</span> keyof T]?: T[P] &#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Required"><a href="#Required" class="headerlink" title="Required"></a>Required</h3><p>Required 的作用是将传入的属性变为必选项</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Required&lt;T&gt; = &#123; [P <span class="hljs-keyword">in</span> keyof T]-?: T[P] &#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Mutable"><a href="#Mutable" class="headerlink" title="Mutable"></a>Mutable</h3><p>对 readonly 进行加减。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Mutable&lt;T&gt; = &#123;<br>  -<span class="hljs-keyword">readonly</span> [P <span class="hljs-keyword">in</span> keyof T]: T[P]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Readonly"><a href="#Readonly" class="headerlink" title="Readonly"></a>Readonly</h3><p>将传入的属性变为只读选项</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Readonly&lt;T&gt; = &#123; <span class="hljs-keyword">readonly</span> [P <span class="hljs-keyword">in</span> keyof T]: T[P] &#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Record"><a href="#Record" class="headerlink" title="Record"></a>Record</h3><p>将 K 中所有的属性的值转化为 T 类型</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Record&lt;K <span class="hljs-keyword">extends</span> keyof <span class="hljs-built_in">any</span>, T&gt; = &#123; [P <span class="hljs-keyword">in</span> K]: T &#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Pick"><a href="#Pick" class="headerlink" title="Pick"></a>Pick</h3><p>从 T 中取出 一系列 K 的属性</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Pick&lt;T, K <span class="hljs-keyword">extends</span> keyof T&gt; = &#123; [P <span class="hljs-keyword">in</span> K]: T[P] &#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Exclude"><a href="#Exclude" class="headerlink" title="Exclude"></a>Exclude</h3><p>从 T 中找出 U 中没有的元素, 换种更加贴近语义的说法其实就是从T 中排除 U</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Exclude&lt;T, U&gt; = T <span class="hljs-keyword">extends</span> U ? <span class="hljs-built_in">never</span> : T;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Extract"><a href="#Extract" class="headerlink" title="Extract"></a>Extract</h3><p>提取出 T 包含在 U 中的元素</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Extract&lt;T, U&gt; = T <span class="hljs-keyword">extends</span> U ? T : <span class="hljs-built_in">never</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Omit"><a href="#Omit" class="headerlink" title="Omit"></a>Omit</h3><p>用之前的 Pick 和 Exclude 进行组合, 实现忽略对象某些属性功能</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Omit&lt;T, K&gt; = Pick&lt;T, Exclude&lt;keyof T, K&gt;&gt;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-keyword">type</span> Foo = Omit&lt;&#123;<span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>&#125;, <span class="hljs-string">&#x27;name&#x27;</span>&gt; <span class="hljs-comment">// -&gt; &#123; age: number &#125;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="前端新技术"><a href="#前端新技术" class="headerlink" title="前端新技术"></a>前端新技术</h1><h3 id="PWA"><a href="#PWA" class="headerlink" title="PWA"></a>PWA</h3><h3 id="Electron"><a href="#Electron" class="headerlink" title="Electron"></a>Electron</h3>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/27/algorithm-test-11273/">
+                        <span class="hidden-mobile">最长回文子串</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"282ff869d3b69f9ab2c9","clientSecret":"1076a21fa4b4b6faa17ded96a7fd9fe8c9cbb0cb","repo":"jerome77777.github.io","owner":"jerome77777","admin":["jerome77777"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '45f4a4511fa3881466b104fd757503d3'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://github.com/Jerome77777" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="#" target="_blank" rel="nofollow noopener"><span>jerome</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
