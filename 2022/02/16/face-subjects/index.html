@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.9k 字
+      9.6k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      75
+      106
        分钟
     </span>
   
@@ -411,13 +411,19 @@
 <li>后端服务通过 web push 向推送服务器发送消息通知，发送时会将前面提到的订阅消息带上，以告知推送服务器这条消息推送的目的地</li>
 <li>推送服务器接收到消息之后，再根据订阅信息将消息推送给对应的浏览器</li>
 </ol>
-<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><h3 id="双向绑定原理"><a href="#双向绑定原理" class="headerlink" title="双向绑定原理"></a>双向绑定原理</h3><p>使用 defineProperty 改写 get 和 set 方法</p>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><h3 id="双向绑定原理"><a href="#双向绑定原理" class="headerlink" title="双向绑定原理"></a>双向绑定原理</h3><p>使用 defineProperty 改写 getter 和 setter 方法</p>
 <ol>
-<li>实现一个监听器 Observer，用来劫持并监听所有属性，如果有变动，就通知订阅者</li>
-<li>实现一个订阅者 Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图</li>
+<li>实现一个监听器 Observer，使用 Object.defineProperty 改写 getter 和 setter 方法，getter 时收集依赖，setter 时通知订阅者更新数据</li>
 <li>实现一个解析器 Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器</li>
+<li>实现一个订阅者 Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图</li>
 </ol>
 <h3 id="Vue-数组改变原理"><a href="#Vue-数组改变原理" class="headerlink" title="Vue 数组改变原理"></a>Vue 数组改变原理</h3><p>在数组和 Array.property 上的原型链上插入一个自定义的对象,拦截原来的 push 等方法,在自定义对象中的同名方法中先执行原本的方法,再去人为的调用 <strong>ob</strong>.dep.notify() 去执行之前收集的回调。</p>
+<h3 id="computed-和-watch-区别"><a href="#computed-和-watch-区别" class="headerlink" title="computed 和 watch 区别"></a>computed 和 watch 区别</h3><ol>
+<li><p>computed 计算属性 : 依赖其它属性值，并且 computed 的值有缓存，只有它依赖的属性值发生改变，下一次获取 computed 的值时才会重新计算 computed 的值。</p>
+</li>
+<li><p>watch 侦听器 : 更多的是<strong>观察</strong>的作用，<strong>无缓存性</strong>，类似于某些数据的监听回调，每当监听的数据变化时都会执行回调进行后续操作。</p>
+</li>
+</ol>
 <h3 id="虚拟-Dom"><a href="#虚拟-Dom" class="headerlink" title="虚拟 Dom"></a>虚拟 Dom</h3><ol>
 <li>用 js 对象模拟 dom 树，得到一棵虚拟 dom 树。</li>
 <li>当页面数据变更时，生成新的 Dom 树，比较新旧两棵虚拟 Dom 树的差异。</li>
@@ -435,6 +441,146 @@
 <li>框架本质不同：vue 是 MVVM，react 是前端组件化框架</li>
 </ol>
 <h3 id="key-的作用"><a href="#key-的作用" class="headerlink" title="key 的作用"></a>key 的作用</h3><p>key 的作用就是高效的更新虚拟 Dom</p>
+<h3 id="vm-set-的实现原理"><a href="#vm-set-的实现原理" class="headerlink" title="vm.$set 的实现原理"></a>vm.<code>$set</code> 的实现原理</h3><ol>
+<li><p>如果目标是数组，直接使用数组的 splice 方法触发相应式；</p>
+</li>
+<li><p>如果目标是对象，会先判读属性是否存在、对象是否是响应式，最终如果要对属性进行响应式处理，则是通过调用 defineReactive 方法进行响应式处理（ defineReactive 方法就是 Vue 在初始化对象时，给对象属性采用 Object.defineProperty 动态添加 getter 和 setter 的功能所调用的方法）</p>
+</li>
+</ol>
+<h3 id="什么是-mixin"><a href="#什么是-mixin" class="headerlink" title="什么是 mixin"></a>什么是 mixin</h3><ol>
+<li><p>Mixin 使我们能够为 Vue 组件编写可插拔和可重用的功能。</p>
+</li>
+<li><p>如果希望在多个组件之间重用一组组件选项，例如生命周期 hook、 方法等，则可以将其编写为 mixin，并在组件中简单的引用它。</p>
+</li>
+<li><p>然后将 mixin 的内容合并到组件中。如果你要在 mixin 中定义生命周期 hook，那么它在执行时将优化于组件自已的 hook。</p>
+</li>
+</ol>
+<h3 id="Vue的性能优化"><a href="#Vue的性能优化" class="headerlink" title="Vue的性能优化"></a>Vue的性能优化</h3><ol>
+<li><p><strong>编码阶段</strong></p>
+<ul>
+<li><p>尽量减少data中的数据，data中的数据都会增加getter和setter，会收集对应的watcher</p>
+</li>
+<li><p>v-if和v-for不能连用</p>
+</li>
+<li><p>如果需要使用v-for给每项元素绑定事件时使用事件代理</p>
+</li>
+<li><p>SPA 页面采用keep-alive缓存组件</p>
+</li>
+<li><p>在更多的情况下，使用v-if替代v-show</p>
+</li>
+<li><p>key保证唯一</p>
+</li>
+<li><p>使用路由懒加载、异步组件</p>
+</li>
+<li><p>防抖、节流</p>
+</li>
+<li><p>第三方模块按需导入</p>
+</li>
+<li><p>长列表滚动到可视区域动态加载</p>
+</li>
+<li><p>图片懒加载</p>
+</li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>SEO优化</strong></p>
+<ul>
+<li>预渲染</li>
+<li>服务端渲染SSR</li>
+</ul>
+</li>
+<li><p><strong>打包优化</strong></p>
+<ul>
+<li>压缩代码</li>
+<li>Tree Shaking/Scope Hoisting</li>
+<li>使用cdn加载第三方模块</li>
+<li>多线程打包happypack</li>
+<li>splitChunks抽离公共文件</li>
+<li>sourceMap优化</li>
+</ul>
+</li>
+<li><p><strong>用户体验</strong></p>
+<ul>
+<li>骨架屏</li>
+<li>PWA</li>
+<li>还可以使用缓存(客户端缓存、服务端缓存)优化、服务端开启gzip压缩等</li>
+</ul>
+</li>
+</ol>
+<h3 id="Vue的生命周期"><a href="#Vue的生命周期" class="headerlink" title="Vue的生命周期"></a>Vue的生命周期</h3><p>Vue 实例有⼀个完整的⽣命周期，也就是从开始创建、初始化数据、编译模版、挂载Dom -&gt; 渲染、更新 -&gt; 渲染、卸载 等⼀系列过程，称这是Vue的⽣命周期。</p>
+<ol>
+<li><p><strong>beforeCreate（创建前）</strong>：数据观测和初始化事件还未开始，此时 data 的响应式追踪、event/watcher 都还没有被设置，也就是说不能访问到data、computed、watch、methods上的方法和数据。</p>
+</li>
+<li><p><strong>created（创建后）</strong> ：实例创建完成，实例上配置的 options 包括 data、computed、watch、methods 等都配置完成，但是此时渲染得节点还未挂载到 DOM，所以不能访问到 <code>$el</code> 属性。</p>
+</li>
+<li><p><strong>beforeMount（挂载前）</strong>：在挂载开始之前被调用，相关的render函数首次被调用。实例已完成以下的配置：编译模板，把data里面的数据和模板生成html。此时还没有挂载html到页面上。</p>
+</li>
+<li><p><strong>mounted（挂载后）</strong>：在el被新创建的 vm.$el 替换，并挂载到实例上去之后调用。实例已完成以下的配置：用上面编译好的html内容替换el属性指向的DOM对象。完成模板中的html渲染到html 页面中。此过程中进行ajax交互。</p>
+</li>
+<li><p><strong>beforeUpdate（更新前）</strong>：响应式数据更新时调用，此时虽然响应式数据更新了，但是对应的真实 DOM 还没有被渲染。</p>
+</li>
+<li><p><strong>updated（更新后）</strong> ：在由于数据更改导致的虚拟DOM重新渲染和打补丁之后调用。此时 DOM 已经根据响应式数据的变化更新了。调用时，组件 DOM已经更新，所以可以执行依赖于DOM的操作。然而在大多数情况下，应该避免在此期间更改状态，因为这可能会导致更新无限循环。该钩子在服务器端渲染期间不被调用。</p>
+</li>
+<li><p><strong>beforeDestroy（销毁前）</strong>：实例销毁之前调用。这一步，实例仍然完全可用，<code>this</code> 仍能获取到实例。</p>
+</li>
+<li><p><strong>destroyed（销毁后）</strong>：实例销毁后调用，调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务端渲染期间不被调用。</p>
+</li>
+</ol>
+<h3 id="组件间通信"><a href="#组件间通信" class="headerlink" title="组件间通信"></a>组件间通信</h3><ol>
+<li><p><strong>父子组件间通信</strong></p>
+<ul>
+<li><p>子组件通过 props 属性来接受父组件的数据，然后父组件在子组件上注册监听事件，子组件通过 emit 触发事件来向父组件发送数据。</p>
+</li>
+<li><p>通过 ref 属性给子组件设置一个名字。父组件通过 <code>$refs</code> 组件名来获得子组件，子组件通过 <code>$parent</code> 获得父组件，这样也可以实现通信。</p>
+</li>
+<li><p>使用 provide/inject，在父组件中通过 provide提供变量，在子组件中通过 inject 来将变量注入到组件中。不论子组件有多深，只要调用了 inject 那么就可以注入 provide中的数据。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>兄弟组件间通信</strong></p>
+<ul>
+<li>使用 eventBus 的方法，它的本质是通过创建一个空的 Vue 实例来作为消息传递的对象，通信的组件引入这个实例，通信的组件通过在这个实例上监听和触发事件，来实现消息的传递。</li>
+<li>通过 <code>$parent/$refs</code> 来获取到兄弟组件，也可以进行通信。</li>
+</ul>
+</li>
+<li><p><strong>任意组件之间</strong></p>
+<ul>
+<li>使用 eventBus ，其实就是创建一个事件中心，相当于中转站，可以用它来传递事件和接收事件</li>
+</ul>
+</li>
+</ol>
+<h3 id="Vue-Router-的懒加载"><a href="#Vue-Router-的懒加载" class="headerlink" title="Vue-Router 的懒加载"></a>Vue-Router 的懒加载</h3><p>非懒加载：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> List <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/components/list.vue&#x27;</span><br><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/list&#x27;</span>, <span class="hljs-attr">component</span>: List &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>方案一(常用)：使用箭头函数+import动态加载</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> List = <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;@/components/list.vue&#x27;</span>)<br><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>    &#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/list&#x27;</span>, <span class="hljs-attr">component</span>: List &#125;<br>  ]<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+
+<p>方案二：使用箭头函数+require动态加载</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> Router(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>   &#123;<br>     <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/list&#x27;</span>,<br>     <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">require</span>([<span class="hljs-string">&#x27;@/components/list&#x27;</span>], resolve)<br>   &#125;<br>  ]<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+
+<p>方案三：使用webpack的require.ensure技术，也可以实现按需加载。 这种情况下，多个路由指定相同的chunkName，会合并打包成一个js文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// r就是resolve</span><br><span class="hljs-keyword">const</span> List = <span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> <span class="hljs-built_in">require</span>.ensure([], <span class="hljs-function">() =&gt;</span> r(<span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;@/components/list&#x27;</span>)), <span class="hljs-string">&#x27;list&#x27;</span>);<br><span class="hljs-comment">// 路由也是正常的写法  这种是官方推荐的写的 按模块划分懒加载 </span><br><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> Router(&#123;<br>  <span class="hljs-attr">routes</span>: [<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/list&#x27;</span>,<br>    <span class="hljs-attr">component</span>: List,<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;list&#x27;</span><br>  &#125;<br> ]<br>&#125;))<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="路由的hash和history模式的区别"><a href="#路由的hash和history模式的区别" class="headerlink" title="路由的hash和history模式的区别"></a>路由的hash和history模式的区别</h3><p><strong>hash模式:</strong></p>
+<p><strong>简介：</strong> hash模式是开发中默认的模式，它的URL带着一个#，例如：<a href="https://link.juejin.cn/?target=http://www.abc.com/%23/vue">www.abc.com/#/vue</a>，它的hash值就是<code>#/vue</code>。</p>
+<p><strong>特点</strong>：hash值会出现在URL里面，但是不会出现在HTTP请求中，对后端完全没有影响。所以改变hash值，不会重新加载页面。这种模式的浏览器支持度很好，低版本的IE浏览器也支持这种模式。hash路由被称为是前端路由，已经成为SPA（单页面应用）的标配。</p>
+<p><strong>原理：</strong> hash模式的主要原理就是<strong>onhashchange()事件</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">window</span>.onhashchange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)</span>&#123;<br>	<span class="hljs-built_in">console</span>.log(event.oldURL, event.newURL);<br>	<span class="hljs-keyword">let</span> hash = location.hash.slice(<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用onhashchange()事件的好处就是，在页面的hash值发生变化时，无需向后端发起请求，window就可以监听事件的改变，并按规则加载相应的代码。除此之外，hash值变化对应的URL都会被浏览器记录下来，这样浏览器就能实现页面的前进和后退。虽然是没有请求后端服务器，但是页面的hash值和对应的URL关联起来了。</p>
+<p><strong>history模式</strong></p>
+<p><strong>简介：</strong> history模式的URL中没有#，它使用的是传统的路由分发模式，即用户在输入一个URL时，服务器会接收这个请求，并解析这个URL，然后做出相应的逻辑处理。 <strong>特点：</strong> 当使用history模式时，URL就像这样：<a href="https://link.juejin.cn/?target=http://abc.com/user/id">abc.com/user/id</a>。相比hash模式更加好看。但是，history模式需要后台配置支持。如果后台没有正确配置，访问时会返回404。 <strong>API：</strong> history api可以分为两大部分，切换历史状态和修改历史状态：</p>
+<ul>
+<li><strong>修改历史状态</strong>：包括了 HTML5 History Interface 中新增的 <code>pushState()</code> 和 <code>replaceState()</code> 方法，这两个方法应用于浏览器的历史记录栈，提供了对历史记录进行修改的功能。只是当他们进行修改时，虽然修改了url，但浏览器不会立即向后端发送请求。如果要做到改变url但又不刷新页面的效果，就需要前端用上这两个API。</li>
+<li><strong>切换历史状态：</strong> 包括<code>forward()</code>、<code>back()</code>、<code>go()</code>三个方法，对应浏览器的前进，后退，跳转操作。</li>
+</ul>
+<p>虽然history模式丢弃了丑陋的#。但是，它也有自己的缺点，就是在刷新页面的时候，如果没有相应的路由或资源，就会刷出404来。</p>
+<p>如果想要切换到history模式，就要进行以下配置（后端也要进行配置）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter(&#123;<br>  <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;history&#x27;</span>,<br>  <span class="hljs-attr">routes</span>: [...]<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+
 <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p><strong>Timers（计时器阶段）</strong>：初次进入事件循环，会从计时器阶段开始。此阶段会判断是否存在过期的计时器回调。如果存在则会执行所有过期的计时器回调，执行完毕后，如果回调中触发了相应的微任务，会接着执行所有微任务，执行完微任务后再进入 Pending callbacks 阶段。</p>
 <p><strong>Pending callbacks</strong>：执行推迟到下一个循环迭代的I / O回调（系统调用相关的回调）</p>
 <p><strong>Idle/Prepare</strong>：仅供内部使用。</p>
@@ -528,6 +674,19 @@
 </ul>
 </li>
 </ol>
+<h3 id="SPA-单页面的理解"><a href="#SPA-单页面的理解" class="headerlink" title="SPA 单页面的理解"></a>SPA 单页面的理解</h3><p>仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；</li>
+<li>基于上面一点，SPA 相对对服务器压力小；</li>
+<li>前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载；</li>
+<li>前进后退路由管理：由于单页应用在一个页面中显示所有的内容，所以不能使用浏览器的前进后退功能，所有的页面切换需要自己建立堆栈管理；</li>
+<li>SEO 难度较大：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。</li>
+</ul>
 <h2 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h2><h3 id="浏览器渲染过程"><a href="#浏览器渲染过程" class="headerlink" title="浏览器渲染过程"></a>浏览器渲染过程</h3><ol>
 <li>解析HTML生成DOM树。</li>
 <li>解析CSS生成CSSOM规则树。</li>
@@ -645,7 +804,8 @@
 
 
 
-<h1 id="前端新技术"><a href="#前端新技术" class="headerlink" title="前端新技术"></a>前端新技术</h1><h3 id="PWA"><a href="#PWA" class="headerlink" title="PWA"></a>PWA</h3><h3 id="Electron"><a href="#Electron" class="headerlink" title="Electron"></a>Electron</h3>
+<h1 id="前端新技术"><a href="#前端新技术" class="headerlink" title="前端新技术"></a>前端新技术</h1><h3 id="PWA"><a href="#PWA" class="headerlink" title="PWA"></a>PWA</h3><p>PWA 指的是使用指定技术和标准模式来开发的 Web 应用，这同时赋予它们 Web 应用和原生应用的特性。</p>
+<h3 id="Electron"><a href="#Electron" class="headerlink" title="Electron"></a>Electron</h3>
             </div>
             <hr>
             <div>
