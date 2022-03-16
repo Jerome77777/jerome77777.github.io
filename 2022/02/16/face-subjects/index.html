@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10k 字
+      10.3k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      111
+      115
        分钟
     </span>
   
@@ -827,10 +827,28 @@
 </ul>
 <h3 id="常用的正则表达式"><a href="#常用的正则表达式" class="headerlink" title="常用的正则表达式"></a>常用的正则表达式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// （1）匹配 16 进制颜色值</span><br><span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/#([0-9a-fA-F]&#123;6&#125;|[0-9a-fA-F]&#123;3&#125;)/g</span>;<br><br><span class="hljs-comment">// （2）匹配日期，如 yyyy-mm-dd 格式</span><br><span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^[0-9]&#123;4&#125;-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/</span>;<br><br><span class="hljs-comment">// （3）匹配 qq 号</span><br><span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^[1-9][0-9]&#123;4,10&#125;$/g</span>;<br><br><span class="hljs-comment">// （4）手机号码正则</span><br><span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^1[34578]\d&#123;9&#125;$/g</span>;<br><br><span class="hljs-comment">// （5）用户名正则</span><br><span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^[a-zA-Z\$][a-zA-Z0-9_\$]&#123;4,16&#125;$/</span>;<br><br></code></pre></td></tr></table></figure>
 
-
-
-
-
+<h3 id="相等运算符"><a href="#相等运算符" class="headerlink" title="相等运算符"></a>相等运算符</h3><ol>
+<li>原始类型值：原始类型的值会转换成数值再进行比较：boolean、string</li>
+<li>对象与原始类型值比较：对象转换成原始类型的值，在进行比较，先调用对象的 valueOf 方法，如果得到原始类型的值，就进行比较；如果得到的还是对象，则再调用 toString 方法，得到字符串形式，在进行比较</li>
+<li>undefined 和 null：undefined 和 null 只有与自身比较，或者互相比较时，才会返回 true；与其他类型的值比较时，结果都为 false</li>
+</ol>
+<h3 id="JS-不同数据类型相加"><a href="#JS-不同数据类型相加" class="headerlink" title="JS 不同数据类型相加"></a>JS 不同数据类型相加</h3><ol>
+<li>string + number<ul>
+<li>数字在前，字符串在后：从左到右计算，先计算数字表达式，再把计算结果转化为字符串和后面的字符串相加</li>
+<li>字符串在前，数字在后：数字转化为字符串相加</li>
+<li>空文本加数字，有多少空格就显示多少空格</li>
+</ul>
+</li>
+<li>number + boolean：布尔值为 true 转化为 1，布尔值为 false 转化为 0，与数字相加</li>
+<li>string + boolean：布尔值转换为字符串相加</li>
+<li>null + number/string<ul>
+<li>null + number：null 转为为 0，与数字相加</li>
+<li>null + string：null 转为字符串，与数字相加</li>
+</ul>
+</li>
+<li>null + boolean：null 转为 0，true 为 1，false 为 0，相加</li>
+<li>undefined 与其余数据类型相加：undefined 只与字符串进行累加时有效，其他情况皆返回 NaN</li>
+</ol>
 <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="排序有哪些，时间复杂度、空间复杂度"><a href="#排序有哪些，时间复杂度、空间复杂度" class="headerlink" title="排序有哪些，时间复杂度、空间复杂度"></a>排序有哪些，时间复杂度、空间复杂度</h3><p>快速排序、归并排序、堆排序：时间复杂度O(nlogn）<br>冒泡、选择、插入O(n2)</p>
 <h2 id="计算机知识"><a href="#计算机知识" class="headerlink" title="计算机知识"></a>计算机知识</h2><h3 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h3><p>进程是一个具有一定独立功能的程序在一个数据集上的一次动态执行过程。<br>线程是程序执行流的最小单元</p>
 <p>一个进程是由多个线程组成，线程是进程中代码的不同执行路线</p>
