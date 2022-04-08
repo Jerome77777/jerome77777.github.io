@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10.3k 字
+      13.1k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      115
+      147
        分钟
     </span>
   
@@ -248,7 +248,7 @@
 <h3 id="http2"><a href="#http2" class="headerlink" title="http2"></a>http2</h3><ol>
 <li><p><strong>多路复用</strong>：所有请求都是通过一个 TCP 连接并发完成。</p>
 <ul>
-<li>同域名下所有通信都在耽搁连接上完成</li>
+<li>同域名下所有通信都在单个连接上完成</li>
 <li>单个连接可以承载任意数量的双向数据流</li>
 <li>数据流以消息的形式发送，而消息又由一个或多个帧组成，多个帧之间可以乱序发送</li>
 </ul>
@@ -415,7 +415,89 @@
 <ol>
 <li>实现一个监听器 Observer，使用 Object.defineProperty 改写 getter 和 setter 方法，getter 时收集依赖，setter 时通知订阅者更新数据</li>
 <li>实现一个解析器 Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器</li>
-<li>实现一个订阅者 Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图</li>
+<li>实现一个订阅者 Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图，Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是: ①在自身实例化时往属性订阅器(dep)里面添加自己 ②自身必须有一个update()方法 ③待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调</li>
+</ol>
+<h3 id="Vue-3-使用-proxy-的原因"><a href="#Vue-3-使用-proxy-的原因" class="headerlink" title="Vue 3 使用 proxy 的原因"></a>Vue 3 使用 proxy 的原因</h3><p>Object.defineProperty 缺陷：</p>
+<ol>
+<li>监控到数组下标的变化时，开销很大</li>
+<li>Object.defineProperty 只能劫持对象的属性，而 Proxy 是直接代理对象。Object.defineProperty 需要遍历对象的每个属性，如果属性值也是对象，则需要深度遍历。而 Proxy 直接代理对象，不需要遍历操作</li>
+<li>Object.defineProperty 对新增属性需要手动进行 Observe，vue2 时需要使用 vm.$set 才能保证新增的属性也是响应式</li>
+<li>Proxy 支持 13种拦截操作</li>
+<li>Proxy 作为新标准，长远来看，js 引擎会继续优化 proxy，但 getter 和 setter 基本不会再有针对性优化</li>
+</ol>
+<h3 id="Computed-和-watch-的区别"><a href="#Computed-和-watch-的区别" class="headerlink" title="Computed 和 watch 的区别"></a>Computed 和 watch 的区别</h3><ol>
+<li>Computed 计算属性：依赖其它属性值，并且 computed 的值有缓存，只是他的依赖的属性值发生改变，下一次获取 computed 的值才会重新计算 computed 的值</li>
+<li>watch 侦听器：更多的是观察的作用，无缓存性，类似某些数据的监听回调，每当监听的数据变化时，都会执行回调进行后续操作</li>
+</ol>
+<p>运用场景：</p>
+<ol>
+<li>当我们需要进行数值计算，并且依赖于其他数据时，应该使用 computed，因为可以利用 computed 的缓存特性，避免每次获取值时，都需要重新计算</li>
+<li>当我们需要再数据变化时执行异步或者开销比较大的操作时，应该使用 watch，使用 watch 选项允许我们执行异步操作，限制我们执行操作的频率，并在我们得到最终结果钱，设置中间状态</li>
+<li>多个因素影响一个显示，用 computed，一个因素的变化影响多个其他因素显示，用 watch。</li>
+</ol>
+<h3 id="为什么需要-Virtual-Dom"><a href="#为什么需要-Virtual-Dom" class="headerlink" title="为什么需要 Virtual Dom"></a>为什么需要 Virtual Dom</h3><ol>
+<li>具备跨平台的优势</li>
+<li>操作 dom 慢，js 运行效率高，我们可以将 dom 对比操作放在 js 层，提高效率</li>
+<li>提升渲染性能</li>
+</ol>
+<h3 id="过滤器filter"><a href="#过滤器filter" class="headerlink" title="过滤器filter"></a>过滤器filter</h3><p>在 vue 中使用 filter 来过滤数据，filters 不会修改数据，而是过滤数据，改变用户看到的输出。使用场景：比如需要处理时间、数字的显示格式</p>
+<h3 id="常见的事件修饰符及其作用"><a href="#常见的事件修饰符及其作用" class="headerlink" title="常见的事件修饰符及其作用"></a>常见的事件修饰符及其作用</h3><ol>
+<li>.stop: 等用于 js 中的 event.stopPropagation(), 防止事件冒泡</li>
+<li>.prevebt: 等同于 js 中的 event.preventDefault，防止执行预设的行为</li>
+<li>.capture：当元素发生冒泡时，先触发带有该修饰符的元素。若有多个该修饰符，则由外而内触发。如 div1 中嵌套 div2 中嵌套 div3.capture 中嵌套 div4，那么执行顺序为: div3 =&gt; div4 =&gt; div2 =&gt; div1</li>
+<li>.self：只会触发自己范围内的事件，不包含子元素</li>
+<li>.once：只会触发一次</li>
+</ol>
+<h3 id="V-model-是如何实现的，语法糖实际是什么"><a href="#V-model-是如何实现的，语法糖实际是什么" class="headerlink" title="V-model 是如何实现的，语法糖实际是什么"></a>V-model 是如何实现的，语法糖实际是什么</h3><ol>
+<li>作用在表单元素上 <code>v-model=&quot;message&quot; </code>等同于<code> v-bind:value=&quot;message&quot; v-on:input=&quot;message=$event.target.value&quot;</code></li>
+<li>作用在组件上，本质是一个父子组件通信的语法糖，通过 prop 和$emit 实现，等同于<code>:value=&quot;message&quot; @input=&quot;$emit(&#39;input&#39;, $event.target.value)&quot;</code></li>
+</ol>
+<h3 id="data-为什么必须是函数"><a href="#data-为什么必须是函数" class="headerlink" title="data 为什么必须是函数"></a>data 为什么必须是函数</h3><p>因为组件是可以复用的，js 里对象是引用关系，如果组件 data 是一个对象，那么子组件中的 data 属性值会互相污染。</p>
+<h3 id="vue-data-中某个属性的值发生改变后，视图会立即同步执行重新渲染吗"><a href="#vue-data-中某个属性的值发生改变后，视图会立即同步执行重新渲染吗" class="headerlink" title="vue data 中某个属性的值发生改变后，视图会立即同步执行重新渲染吗"></a>vue data 中某个属性的值发生改变后，视图会立即同步执行重新渲染吗</h3><p>不会。</p>
+<p>vue 实现响应式并不是数据发生变化之后 dom 立即变化，而是按一定的策略进行 dom 的更新。</p>
+<p>vue 在更新 dom 时是异步执行的，只要侦听到数据变化，vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更</p>
+<p>如果同一个 watcher 被多次触发，只会被推入队列一次，这种缓冲时去除重复数据对于避免不必要的计算和 dom 操作是非常重要的</p>
+<p>然后，在下一个事件循环的 tick 中，vue 刷新队列并执行实际（已去重的）工作。</p>
+<h3 id="数据层级结构太深问题"><a href="#数据层级结构太深问题" class="headerlink" title="数据层级结构太深问题"></a>数据层级结构太深问题</h3><p>使用 vm.$set手动定义一层数据</p>
+<h3 id="v-if和v-for一起使用的弊端及解决办法"><a href="#v-if和v-for一起使用的弊端及解决办法" class="headerlink" title="v-if和v-for一起使用的弊端及解决办法"></a>v-if和v-for一起使用的弊端及解决办法</h3><p>由于v-for的优先级比v-if高，所以导致每循环一次就会去v-if一次，而v-if是通过创建和销毁dom元素来控制元素的显示与隐藏，所以就会不停的去创建和销毁元素，造成页面卡顿，性能下降。</p>
+<p>解决办法：</p>
+<ol>
+<li>在v-for的外层或内层包裹一个元素来使用v-if</li>
+<li>用computed处理</li>
+</ol>
+<h3 id="vue常用指令"><a href="#vue常用指令" class="headerlink" title="vue常用指令"></a>vue常用指令</h3><ol>
+<li>v-model 多用于表单元素实现双向数据绑定（同angular中的ng-model）</li>
+<li>v-bind 动态绑定 作用： 及时对页面的数据进行更改</li>
+<li>v-on:click 给标签绑定函数，可以缩写为@，例如绑定一个点击函数 函数必须写在methods里面</li>
+<li>v-for 格式： v-for=”字段名 in(of) 数组json” 循环数组或json(同angular中的ng-repeat)</li>
+<li>v-show 显示内容 （同angular中的ng-show）</li>
+<li>v-hide 隐藏内容（同angular中的ng-hide）</li>
+<li>v-if 显示与隐藏 （dom元素的删除添加 同angular中的ng-if 默认值为false）</li>
+<li>v-else-if 必须和v-if连用</li>
+<li>v-else 必须和v-if连用 不能单独使用 否则报错 模板编译错误</li>
+<li>v-text 解析文本</li>
+<li>v-html 解析html标签</li>
+<li>v-bind:class 三种绑定方法 1、对象型 ‘{red:isred}’ 2、三元型 ‘isred?”red”:”blue”‘ 3、数组型 ‘[{red:”isred”},{blue:”isblue”}]’</li>
+<li>v-once 进入页面时 只渲染一次 不在进行渲染</li>
+<li>v-cloak 防止闪烁</li>
+<li>v-pre 把标签内部的元素原位输出</li>
+</ol>
+<h3 id="Keep-alive"><a href="#Keep-alive" class="headerlink" title="Keep-alive"></a>Keep-alive</h3><p>如果需要在组件切换时，保存一些组件的状态防止多次渲染，就可以使用 keep-alive 组件包裹需要保存的组件</p>
+<p>两个重要属性，include 缓存组件名称，exclude 不需要缓存的组件名称</p>
+<h3 id="父子组件的生命周期顺序"><a href="#父子组件的生命周期顺序" class="headerlink" title="父子组件的生命周期顺序"></a>父子组件的生命周期顺序</h3><ol>
+<li>加载渲染过程：<br>父beforeCreate-&gt;父created-&gt;父beforeMount-&gt;子beforeCreate-&gt;子created-&gt;子beforeMount-&gt;子mounted-&gt;父mounted</li>
+<li>子组件更新过程：父beforeUpdate-&gt;子beforeUpdate-&gt;子updated-&gt;父updated</li>
+<li>父组件更新过程：父beforeUpdate-&gt;父updated</li>
+<li>销毁过程：父beforeDestroy-&gt;子beforeDestroy-&gt;子destroyed-&gt;父destroyed</li>
+</ol>
+<h3 id="vue-router有哪几种导航钩子？"><a href="#vue-router有哪几种导航钩子？" class="headerlink" title="vue-router有哪几种导航钩子？"></a>vue-router有哪几种导航钩子？</h3><ol>
+<li>全局导航钩子：router.beforeEach(to,from,next)</li>
+<li>组件内的钩子beforeRouteEnter (to, from, next) beforeRouteUpdate (to, from, next) beforeRouteLeave (to, from, next)</li>
+<li>单独路由独享组件 beforeEnter: (to, from, next)</li>
+</ol>
+<h3 id="route和-router的区别"><a href="#route和-router的区别" class="headerlink" title="$route和$router的区别"></a>$route和$router的区别</h3><ol>
+<li>$route是“路由信息对象”，包括path，params，hash，query，fullPath，matched，name等路由信息参数。</li>
+<li>$router是“路由实例”对象包括了路由的跳转方法，钩子函数等</li>
 </ol>
 <h3 id="Vue-数组改变原理"><a href="#Vue-数组改变原理" class="headerlink" title="Vue 数组改变原理"></a>Vue 数组改变原理</h3><p>在数组和 Array.property 上的原型链上插入一个自定义的对象,拦截原来的 push 等方法,在自定义对象中的同名方法中先执行原本的方法,再去人为的调用 <strong>ob</strong>.dep.notify() 去执行之前收集的回调。</p>
 <h3 id="computed-和-watch-区别"><a href="#computed-和-watch-区别" class="headerlink" title="computed 和 watch 区别"></a>computed 和 watch 区别</h3><ol>
@@ -424,6 +506,65 @@
 <li><p>watch 侦听器 : 更多的是<strong>观察</strong>的作用，<strong>无缓存性</strong>，类似于某些数据的监听回调，每当监听的数据变化时都会执行回调进行后续操作。</p>
 </li>
 </ol>
+<h3 id="Vue3-性能提升主要是通过哪几方面体现"><a href="#Vue3-性能提升主要是通过哪几方面体现" class="headerlink" title="Vue3 性能提升主要是通过哪几方面体现"></a>Vue3 性能提升主要是通过哪几方面体现</h3><ol>
+<li>响应式系统提升：proxy 的性能本来就比 defineProperty 好，proxy 可以拦截属性的访问、赋值、删除等操作，不需要初始化的时候遍历所有属性，另外有多层属性嵌套的话，只有访问某个属性的时候，才会递归处理下一级的属性。</li>
+</ol>
+<p>优势：</p>
+<ul>
+<li>可以监听动态新增的属性</li>
+<li>可以监听删除的属性</li>
+<li>可以监听数组的索引和 length 属性</li>
+</ul>
+<ol start="2">
+<li>编译优化</li>
+</ol>
+<p>​    优化编译和重写虚拟 dom，让首次渲染和更新 dom 性能有更大的提升。vue2 通过标记静态根节点，优化 diff 算法，vue3标记和提升所有静态根节点，diff 的时候只比较动态节点内容 fragments，模板里面不用创建唯一根节点，可以直接放同级标签和文本内容</p>
+<ol start="3">
+<li>源码体积的优化</li>
+</ol>
+<p>​    vue3 移除了一些不常用的 api，例如：inline-template、filter 等 使用 tree-shaking</p>
+<h3 id="composition-Api-与-vue2-使用的-options-api-有什么区别"><a href="#composition-Api-与-vue2-使用的-options-api-有什么区别" class="headerlink" title="composition Api 与 vue2 使用的 options api 有什么区别"></a>composition Api 与 vue2 使用的 options api 有什么区别</h3><p>options api：</p>
+<p>包含一个描述组件选项（data、methods、props等）的对象 options；api 开发复杂组件，同一个功能逻辑的代码被拆分到不同的选项；使用 mixin 重用公用代码，也有问题；命名冲突，数据来源不清晰</p>
+<p>composition api：</p>
+<p>vue3 新增的一组 api，他是基于函数的 api，可以更灵活的组织组件的逻辑。解决 options api 在大型项目中，options api 不好拆分和重用的问题</p>
+<h3 id="proxy-相对于-Object-defineProperty"><a href="#proxy-相对于-Object-defineProperty" class="headerlink" title="proxy 相对于 Object.defineProperty"></a>proxy 相对于 Object.defineProperty</h3><ul>
+<li>可以监听数组的变化</li>
+<li>可以劫持整个对象</li>
+<li>操作时不是对原对象的操作，是 new Proxy 返回的一个新对象</li>
+<li>可以劫持的操作有 13 种</li>
+</ul>
+<h3 id="Vue3-在编译方面有哪些优化"><a href="#Vue3-在编译方面有哪些优化" class="headerlink" title="Vue3 在编译方面有哪些优化"></a>Vue3 在编译方面有哪些优化</h3><p>vue3 中标记和提升所有的静态节点，diff 的时候只需要对比动态节点内容</p>
+<p>fragments：</p>
+<p>template 中不需要唯一根节点，可以直接放文本或者同级标签静态提升，当使用静态提升时，所有的静态节点都被提升到 render 方法之外，只会在应用启动的时候被创建一次，之后使用只需要应用提取的静态节点，随着每次的渲染被不停地复用。patch flag，在动态标签末尾加上相应的标记，只能带 patch flpg 的节点才被认为是动态的元素，会被追踪属性的修改，能快速的找到动态节点，而不用逐个逐层遍历，提高了虚拟 dom diff 的性能。缓存事件处理函数 cacheHandler，避免每次触发都要重新生成全新的 function 区更新之前的函数 。tree shaking优化核心库体积，减少不必要的代码量</p>
+<p>vue3 响应式系统的实现原理</p>
+<ol>
+<li><strong>reactive</strong></li>
+</ol>
+<p>​    设置对象为响应式对象。接收一个参数，判断这参数是否是对象。不是对象则直接返回这个参数，不做响应式处理。创建拦截器 handerler，设置 get。sey、deleteProperty</p>
+<ol start="2">
+<li><p><strong>get</strong></p>
+<ul>
+<li>收集依赖</li>
+<li>如果当前 key 的值是对象，则为当前 key 的对象创建拦截器 handler，设置 get、set、deleteProperty</li>
+<li>如果当前 key 的值不是对象，则返回当前 key 的值</li>
+</ul>
+</li>
+<li><p><strong>set</strong></p>
+<p>设置的新值和老值不相等时，更新为新值，并触发更新（trigger）。deleteProperty 当前对象有这个 key 的时候，删除这个 key 并触发更新（trigger）</p>
+</li>
+<li><p><strong>effect</strong></p>
+</li>
+</ol>
+<p>​        接收一个函数作为参数。作用是：访问响应式对象属性时去收集依赖</p>
+<ol start="4">
+<li><strong>track</strong></li>
+</ol>
+<p>​        接收两个参数：target 和 key</p>
+<p>​        如果没有 activeEffect，则说明没有创建 effect 依赖—如果有 activeEffect，则去判断 weakMap 集合中是否有 target 属性，weakMap 集合中没有 target 属性，则 <code>set(target, (depsMap = new Map()))</code>,weakMap 集合中有 target 属性，则判断 target 属性的 map 值的 depsMap 中是否有 key 属性—depsMap 中没有 key 属性，则 <code>set(key, (dep = new Set()))</code>—depsMap 中有key 属性，则添加这个 activeEffect</p>
+<ol start="5">
+<li>trigger</li>
+</ol>
+<p>​    判断 weakMap 中是否有 target 属性，weakMap 中有 target 属性，则判断 target 属性的 map 值中是否有 key 属性，有的话触发手机的 effect()</p>
 <h3 id="虚拟-Dom"><a href="#虚拟-Dom" class="headerlink" title="虚拟 Dom"></a>虚拟 Dom</h3><ol>
 <li>用 js 对象模拟 dom 树，得到一棵虚拟 dom 树。</li>
 <li>当页面数据变更时，生成新的 Dom 树，比较新旧两棵虚拟 Dom 树的差异。</li>
@@ -583,13 +724,18 @@
 
 
 <h3 id="vue-config-js-打包优化配置"><a href="#vue-config-js-打包优化配置" class="headerlink" title="vue.config.js 打包优化配置"></a>vue.config.js 打包优化配置</h3><ol>
-<li>Gzip 压缩</li>
-<li>代码压缩</li>
-<li>cdn 配置</li>
-<li>公共代码抽离</li>
-<li>css loader 处理</li>
-<li>添加分析工具</li>
-<li></li>
+<li><p>Gzip 压缩</p>
+</li>
+<li><p>代码压缩</p>
+</li>
+<li><p>cdn 配置</p>
+</li>
+<li><p>公共代码抽离</p>
+</li>
+<li><p>css loader 处理</p>
+</li>
+<li><p>添加分析工具</p>
+</li>
 </ol>
 <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p><strong>Timers（计时器阶段）</strong>：初次进入事件循环，会从计时器阶段开始。此阶段会判断是否存在过期的计时器回调。如果存在则会执行所有过期的计时器回调，执行完毕后，如果回调中触发了相应的微任务，会接着执行所有微任务，执行完微任务后再进入 Pending callbacks 阶段。</p>
 <p><strong>Pending callbacks</strong>：执行推迟到下一个循环迭代的I / O回调（系统调用相关的回调）</p>
@@ -717,6 +863,7 @@
 </ul>
 </li>
 </ol>
+<p>​       </p>
 <ol start="2">
 <li><p>使用 babel 完成 JavaScript 的编译</p>
 </li>
@@ -849,6 +996,7 @@
 <li>null + boolean：null 转为 0，true 为 1，false 为 0，相加</li>
 <li>undefined 与其余数据类型相加：undefined 只与字符串进行累加时有效，其他情况皆返回 NaN</li>
 </ol>
+<h3 id="js-如何执行代码"><a href="#js-如何执行代码" class="headerlink" title="js 如何执行代码"></a>js 如何执行代码</h3><p><img src="https://segmentfault.com/img/remote/1460000023133332" srcset="/img/loading.gif" lazyload alt="js 如何执行代码"></p>
 <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="排序有哪些，时间复杂度、空间复杂度"><a href="#排序有哪些，时间复杂度、空间复杂度" class="headerlink" title="排序有哪些，时间复杂度、空间复杂度"></a>排序有哪些，时间复杂度、空间复杂度</h3><p>快速排序、归并排序、堆排序：时间复杂度O(nlogn）<br>冒泡、选择、插入O(n2)</p>
 <h2 id="计算机知识"><a href="#计算机知识" class="headerlink" title="计算机知识"></a>计算机知识</h2><h3 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h3><p>进程是一个具有一定独立功能的程序在一个数据集上的一次动态执行过程。<br>线程是程序执行流的最小单元</p>
 <p>一个进程是由多个线程组成，线程是进程中代码的不同执行路线</p>
